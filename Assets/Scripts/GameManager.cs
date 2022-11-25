@@ -64,21 +64,33 @@ public class GameManager : MonoBehaviour
         }
 
         quantity += currentIndex;
-        for (int i = 0; i < quantity && enemies.Count > i; i++)
+        for (int i = currentIndex; i < quantity && enemies.Count > i; i++)
         {
-            enemies[i].transform.position = GetEnemySpawnLocation();
+            enemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
             enemies[i].SetActive(true);
         }
         Debug.LogWarning("Spawn completed");
         currentIndex += quantity;
         
     }
-
-    Vector3 GetEnemySpawnLocation()
+    int test = 0;
+    Vector3 GetEnemySpawnLocation(int curIndex)
     {
         Vector3 spawnLocation = Vector3.zero;
-        float randX = LCGRandomGenerator.RandomLCGfloat(-40, 40);
-        float randY = LCGRandomGenerator.RandomLCGfloat(-30, 30);
+        float randX = 40;
+        float randY = 30;
+        if (test == 0) //curIndex <= MAX_QUANTITY_ENEMIES / 2)
+        {
+            randX = LCGRandomGenerator.RandomLCGfloat(20, 40);
+            randY = LCGRandomGenerator.RandomLCGfloat(-30, 30);
+            test++;
+        }
+        else if (test == 1) //curIndex <= MAX_QUANTITY_ENEMIES)
+        {
+            randX = LCGRandomGenerator.RandomLCGfloat(-40, 40);
+            randY = LCGRandomGenerator.RandomLCGfloat(-15, -30);
+            test = 0;
+        }
         spawnLocation.x = randX;
         spawnLocation.y = randY;
         return spawnLocation;

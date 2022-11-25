@@ -20,21 +20,23 @@ public static class LCGRandomGenerator
             max = finMax;
             min = finMin;
         }
-        seed += DateTime.Now.Millisecond;
+        // new seed
+        seed += Mathf.Abs((int)DateTime.Now.Ticks);
 
-        int initialRandom = (a * seed + c) % m;
-        float randFloat = initialRandom % max;
-        if (randFloat > -10 && randFloat < 10)
+        float initialRandom = (a * seed + c) % m;
+
+        float randFloat = initialRandom % (float)max;
+
+        if (randFloat < min)
         {
-            randFloat += min;
+            randFloat = min;
         }
-        seed /= 1000;
-        // generate more decimals
-        //int divider = (max * 100);
-        //int randCent = Mathf.Abs(initialRandom) % divider;
-
-        //float randFloat = (float)randCent / (float)divider;
-        Debug.Log(randFloat);
+        else if (randFloat > max)
+        {
+            randFloat = max;
+        }
+        // even out the seed a little bit
+        seed %= 10000;
         return randFloat;
     }
 
