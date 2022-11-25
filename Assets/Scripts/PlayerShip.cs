@@ -109,7 +109,7 @@ public class PlayerShip : MonoBehaviour
         else if (reloading)
         {
             reloading = false;
-            Debug.Log("Done reloading, captain!");
+            //Debug.Log("Done reloading, captain!");
         }
     }
 

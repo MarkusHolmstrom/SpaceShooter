@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     // aim adjustment
     public bool aimable = false;
     [SerializeField]
-    private float aimTimer = 0.3f;
+    private float aimTimer = 0.1f;
     private float lifeTime = 0;
     [SerializeField]
     private int bulletSpeed = 10;
