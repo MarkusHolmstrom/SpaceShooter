@@ -34,6 +34,8 @@ public class PlayerShip : MonoBehaviour
     Vector3 mousePos;
     Vector3 objectPos;
 
+    [SerializeField]
+    private int Health = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -79,7 +81,6 @@ public class PlayerShip : MonoBehaviour
 
     }
 
-    
     void UpdateRotation()
     {
         mousePos = Input.mousePosition;
@@ -109,5 +110,13 @@ public class PlayerShip : MonoBehaviour
         }
     }
 
+    public void DoDamage(int damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+        {
+            Debug.Log("Player dead!");
+        }
+    }
     
 }

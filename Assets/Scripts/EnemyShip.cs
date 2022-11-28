@@ -27,9 +27,9 @@ public class EnemyShip : MonoBehaviour
     [SerializeField]
     private float RELOAD_TIMER = 2.0f;
     [SerializeField]
-    private float reloadTime = 0.0f;
+    private float reloadTime;
 
-    private bool reloading = false;
+    private bool reloading = true;
 
     // enemy AI:
     [SerializeField]
@@ -43,10 +43,21 @@ public class EnemyShip : MonoBehaviour
 
     private bool foundZone = false;
 
+    [SerializeField]
+    private GameObject player;
+
+    [SerializeField]
+    private int Health = 4;
+    [SerializeField]
+    private Transform RoofPart;
+
     // Start is called before the first frame update
     void Start()
     {
         shipTransform = transform;
+        player = GameObject.FindGameObjectWithTag("Player");
+        // =?
+        reloadTime = Random.Range(-2.0f, RELOAD_TIMER);// LCGRandomGenerator.RandomLCGfloat(-2.0f, RELOAD_TIMER);
     }
 
     // Update is called once per frame
@@ -62,11 +73,11 @@ public class EnemyShip : MonoBehaviour
         foundZone = IsWithinScreenZone();
         if (foundZone)
         {
-            shipTransform.Translate(shipSpeed * 0.5f * Time.deltaTime * Vector3.up);
+            shipTransform.Translate(shipSpeed * 0.1f * Time.deltaTime * Vector3.forward);
         }
         else
         {
-            shipTransform.Translate(shipSpeed * Time.deltaTime * Vector3.up);
+            shipTransform.Translate(shipSpeed * Time.deltaTime * Vector3.forward);
         }
     }
 
@@ -93,25 +104,9 @@ public class EnemyShip : MonoBehaviour
 
     void UpdateRotation()
     {
-        if (foundZone)
-        {
-            
-        }
-        else
-        {
-            shipTransform.LookAt(Vector3.zero);
-            //shipTransform.rotation = Quaternion.Euler(new Vector3(0, 0, GetAngleTowardsScreen(shipTransform.rotation.z)));
-        }
+        shipTransform.LookAt(Vector3.zero - player.transform.position, Vector3.up);
         
     }
-
-    //private float GetAngleTowardsScreen(float currentAngle)
-    //{
-    //    if (muzzleLocation.position.x < shipTransform.position.x)
-    //    {
-
-    //    }
-    //}
 
     void ShootCycle()
     {
@@ -128,6 +123,22 @@ public class EnemyShip : MonoBehaviour
         else if (reloading)
         {
             reloading = false;
+        }
+    }
+
+    public void DoDamage(int damage)
+    {
+        Health -= damage;
+        //if (Health > 2)
+        //{
+        //    RoofPart.SetParent(null);
+        //    Rigidbody rb = RoofPart.gameObject.AddComponent<Rigidbody>();
+        //    rb.isKinematic = false;
+        //    rb.useGravity = true;
+        //}
+        if (Health <= 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 }

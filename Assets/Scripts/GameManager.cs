@@ -69,7 +69,6 @@ public class GameManager : MonoBehaviour
             enemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
             enemies[i].SetActive(true);
         }
-        Debug.LogWarning("Spawn completed");
         currentIndex += quantity;
         
     }

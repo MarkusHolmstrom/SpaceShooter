@@ -5,13 +5,16 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public GameObject ship;
+    public GameObject explosionPrefab;
     // aim adjustment
     public bool aimable = false;
     [SerializeField]
-    private float aimTimer = 0.1f;
+    private float aimTimer = 0.05f;
     private float lifeTime = 0;
     [SerializeField]
     private int bulletSpeed = 10;
+    [SerializeField]
+    private int damage = 1;
 
     private Transform bulletTransform;
 
@@ -33,5 +36,24 @@ public class Projectile : MonoBehaviour
             bulletTransform.rotation = newRotation;
         }
         
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
+            ps.DoDamage(damage);
+        }
+        else if (collision.gameObject.tag == "AIShip")
+        {
+            EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
+            ps.DoDamage(damage);
+        }
+        ContactPoint contact = collision.contacts[0];
+        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, contact.normal);
+        Vector3 position = contact.point;
+        Instantiate(explosionPrefab, position, rotation);
+        Destroy(gameObject);
     }
 }
