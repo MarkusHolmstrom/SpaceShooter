@@ -8,8 +8,9 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerShip : MonoBehaviour
 {
-    // cache the transform, saves perf in update etc
     [SerializeField]
+    private LaserBlaster laserBlaster;
+    // cache the transform, saves perf in update etc
     private Transform shipTransform;
     [SerializeField]
     private Transform muzzleLocation;
@@ -50,11 +51,6 @@ public class PlayerShip : MonoBehaviour
 
     void UpdateMovement()
     {
-        //shipTransform.Translate(Vector3.right * moveSpeed * 
-        //    -Input.GetAxis("Horizontal") * Time.deltaTime);
-        //shipTransform.Translate(Vector3.up * moveSpeed *
-        //    Input.GetAxis("Vertical") * Time.deltaTime);
-
         shipTransform.position += new Vector3(
             moveSpeed *  -Input.GetAxis("Horizontal") * Time.deltaTime,
             moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime, 0 );
@@ -96,9 +92,9 @@ public class PlayerShip : MonoBehaviour
 
     void ShootCycle()
     {
-        if (!reloading && Input.GetKey(KeyCode.Mouse0))
+        if (!reloading && Input.GetKey(KeyCode.Mouse0) && laserBlaster)
         {
-            ShootBullet();
+            laserBlaster.ShootBullet(this.gameObject, bullet, muzzleLocation.position);
             reloadTime = 0;
             reloading = true;
         }
@@ -113,13 +109,5 @@ public class PlayerShip : MonoBehaviour
         }
     }
 
-    void ShootBullet()
-    {
-        // Add offset so the bullet spawns with correct rotation
-        Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.forward) * shipTransform.rotation;
-        GameObject bulletSpawn = Instantiate(bullet, muzzleLocation.position, newRotation);
-        Projectile proj = bulletSpawn.GetComponent<Projectile>();
-        proj.ship = this.gameObject;
-        proj.aimable = true;
-    }
+    
 }

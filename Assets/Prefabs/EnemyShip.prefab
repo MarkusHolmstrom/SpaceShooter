@@ -107,6 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4312742207519668722}
+  - component: {fileID: 5090837212371186089}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Untagged
@@ -130,9 +131,28 @@ Transform:
   - {fileID: 4395814214447883628}
   - {fileID: 1710859265480390408}
   - {fileID: 5541107451387782035}
+  - {fileID: 6643652390232329127}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5090837212371186089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4312742207519668723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c95564b8725c1a4393313ecd7170117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserBlaster: {fileID: 7709794798423992447}
+  shipTransform: {fileID: 0}
+  muzzleLocation: {fileID: 6643652390232329127}
+  bullet: {fileID: 7624734722909734874, guid: a2737e31c17fd22489f4370d9c921f95, type: 3}
+  RELOAD_TIMER: 2
+  reloadTime: 0
 --- !u!1 &5954072824902793187
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,8 +262,9 @@ GameObject:
   - component: {fileID: 8994591184892102849}
   - component: {fileID: 2128491288680022914}
   - component: {fileID: 2654631909042470259}
+  - component: {fileID: 7709794798423992447}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: laserBlaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,6 +349,49 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &7709794798423992447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6006277257346790625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16f345a10dcf4345ba7aa84932a74bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &6930398230669409016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6643652390232329127}
+  m_Layer: 0
+  m_Name: MuzzleLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6643652390232329127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6930398230669409016}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.427, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4312742207519668722}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8558986233511947997
 GameObject:
   m_ObjectHideFlags: 0

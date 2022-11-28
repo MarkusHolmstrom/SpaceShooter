@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3204d3fdbbacb7843b071811a77b1451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laserBlaster: {fileID: 2346359699953842276}
   shipTransform: {fileID: 0}
   muzzleLocation: {fileID: 4636076519035556446}
   moveSpeed: 5
@@ -296,8 +297,9 @@ GameObject:
   - component: {fileID: 2853215126052152524}
   - component: {fileID: 3673438697783265331}
   - component: {fileID: 1094838087678351902}
+  - component: {fileID: 2346359699953842276}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: LaserBlaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -382,6 +384,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &2346359699953842276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3813656558780662726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16f345a10dcf4345ba7aa84932a74bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6733678024222723817
 GameObject:
   m_ObjectHideFlags: 0
