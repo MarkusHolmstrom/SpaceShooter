@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6377713129702875800}
   - component: {fileID: 9103954441565645697}
+  - component: {fileID: 302900609987325844}
+  - component: {fileID: 2802338905860747987}
+  - component: {fileID: 7579357252092631926}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,3 +50,39 @@ MonoBehaviour:
   enemyPrefab: {fileID: 4312742207519668723, guid: 83383a4cec55f6447908000b4a9e5a9e, type: 3}
   enemies: []
   spawnsPerWave: 5
+--- !u!114 &302900609987325844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8663864014445308498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c087479f1ca781438229ff71a3eedda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2802338905860747987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8663864014445308498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55b09306ef8fdf4c85f5552205240cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7579357252092631926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8663864014445308498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3d30b1bfd40fa54d8852de18ca5d337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

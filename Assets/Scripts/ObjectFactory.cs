@@ -35,7 +35,7 @@ namespace Factory
                     Bullet bullet = new Bullet
                     {
                         ItemGO = gameObject,
-                        Speed = Random.Range(0.1f, 5f)
+                        Speed = Random.Range(4.0f, 5.0f)
                     };
                     return bullet;
                 case Item.Enemy:
