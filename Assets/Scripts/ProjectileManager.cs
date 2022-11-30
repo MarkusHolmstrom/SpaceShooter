@@ -2,55 +2,101 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct TypeProjectile
+{
+    public bool Enemy;
+    public int QuantityActive;
+    public int MaxActive;
+}
+
 public class ProjectileManager : MonoBehaviour
 {
-    private int maxActive = 0;
+    private List<GameObject> enemyProjectiles = new List<GameObject>();
     private List<GameObject> projectiles = new List<GameObject>();
     [SerializeField]
     private GameObject projectilePrefab;
-    private int quantityActive = 0;
+    [SerializeField]
+    private GameObject enemyProjectilePrefab;
+
+    public TypeProjectile enemyProjectile;
+    public TypeProjectile projectile;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        enemyProjectile = new TypeProjectile
+        {
+            Enemy = true,
+            QuantityActive = 0
+        };
+
+        projectile = new TypeProjectile
+        {
+            Enemy = false,
+            QuantityActive = 0
+        };
     }
 
-    public List<GameObject> CreateProjectilePool(int quantity)
+    public List<GameObject> CreateProjectilePool(int quantity, TypeProjectile typeProj)
     {
-        maxActive += quantity;
+        typeProj.MaxActive += quantity;
         for (int i = 0; i < quantity; i++)
         {
-            GameObject enemy = Instantiate(projectilePrefab);
-            enemy.SetActive(false);
-            projectiles.Add(enemy);
+            GameObject proj;
+            if (typeProj.Enemy)
+            {
+                proj = Instantiate(enemyProjectilePrefab);
+                enemyProjectiles.Add(proj);
+            }
+            else
+            {
+                proj = Instantiate(projectilePrefab);
+                projectiles.Add(proj);
+            }
+            proj.SetActive(false);
         }
         return projectiles;
     }
 
-    public GameObject ShowNewProjectile(int index)
+    public GameObject GetPrefab(bool enemy)
     {
-        AddActiveQuantity();
-        return projectiles[index];
-    }
-
-    private void AddActiveQuantity()
-    {
-        if (quantityActive < maxActive)
+        if (enemy)
         {
-            quantityActive++;
+            return GetNewProjectile(enemyProjectile.QuantityActive + 1, enemyProjectile);
         }
         else
         {
-            CreateProjectilePool(10);
+            return GetNewProjectile(projectile.QuantityActive + 1, projectile);
         }
     }
 
-    public void DecreaseActiveQuantity()
+    private GameObject GetNewProjectile(int index, TypeProjectile typeProj)
     {
-        if (quantityActive > 0)
+        AddActiveQuantity(typeProj);
+        if (typeProj.Enemy)
         {
-            quantityActive--;
+            return enemyProjectiles[index];
+        }
+        return projectiles[index];
+    }
+
+    private void AddActiveQuantity(TypeProjectile typeProj)
+    {
+        if (typeProj.QuantityActive < typeProj.MaxActive)
+        {
+            typeProj.QuantityActive++;
+        }
+        else
+        {
+            CreateProjectilePool(10, typeProj);
+        }
+    }
+
+    public void DecreaseActiveQuantity(TypeProjectile typeProj)
+    {
+        if (typeProj.QuantityActive > 0)
+        {
+            typeProj.QuantityActive--;
         }
     }
 }

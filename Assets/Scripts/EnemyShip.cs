@@ -112,7 +112,7 @@ public class EnemyShip : MonoBehaviour
     {
         if (!reloading && laserBlaster)
         {
-            laserBlaster.ShootBullet(this.gameObject, bullet, muzzleLocation.position);
+            laserBlaster.ShootBullet(this.gameObject, true, muzzleLocation.position);
             reloadTime = 0;
             reloading = true;
         }

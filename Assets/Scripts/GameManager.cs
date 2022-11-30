@@ -5,7 +5,7 @@ using Factory;
 
 public class GameManager : MonoBehaviour
 {
-    private const int MAX_QUANTITY_ENEMIES = 20;
+    private const int MAX_QUANTITY_ENEMIES = 200;
 
     [SerializeField]
     private GameObject enemyPrefab;

@@ -95,7 +95,7 @@ public class PlayerShip : MonoBehaviour
     {
         if (!reloading && Input.GetKey(KeyCode.Mouse0) && laserBlaster)
         {
-            laserBlaster.ShootBullet(this.gameObject, bullet, muzzleLocation.position);
+            laserBlaster.ShootBullet(this.gameObject, false, muzzleLocation.position);
             reloadTime = 0;
             reloading = true;
         }

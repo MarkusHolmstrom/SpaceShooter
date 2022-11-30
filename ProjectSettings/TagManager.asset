@@ -7,6 +7,7 @@ TagManager:
   - AIShip
   - playerBullet
   - AIBullet
+  - GameManager
   layers:
   - Default
   - TransparentFX

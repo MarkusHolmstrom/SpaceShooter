@@ -5,7 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public GameObject ship;
-    public GameObject explosionPrefab;
+    [SerializeField]
+    private GameObject explosionPrefab;
     // aim adjustment
     public bool aimable = false;
     [SerializeField]
