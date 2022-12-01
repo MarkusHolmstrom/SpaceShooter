@@ -398,6 +398,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1898734601 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2802338905860747987, guid: 980685dd1047e144a95c9e17e9221e31, type: 3}
+  m_PrefabInstance: {fileID: 3819143960785818847}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55b09306ef8fdf4c85f5552205240cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1125186994283595095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -421,6 +432,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShip
       objectReference: {fileID: 0}
+    - target: {fileID: 2346359699953842276, guid: b975050a1af2e5f478955f48c4988b89, type: 3}
+      propertyPath: projManager
+      value: 
+      objectReference: {fileID: 1898734601}
     - target: {fileID: 8043273166698553090, guid: b975050a1af2e5f478955f48c4988b89, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -474,10 +489,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2802338905860747987, guid: 980685dd1047e144a95c9e17e9221e31, type: 3}
-      propertyPath: projectilePrefab
-      value: 
-      objectReference: {fileID: 3615353736177453648, guid: a4deea23ce8f01940b09d9fd65dd0a50, type: 3}
     - target: {fileID: 6377713129702875800, guid: 980685dd1047e144a95c9e17e9221e31, type: 3}
       propertyPath: m_RootOrder
       value: 4

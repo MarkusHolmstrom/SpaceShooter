@@ -74,8 +74,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55b09306ef8fdf4c85f5552205240cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 0}
-  enemyProjectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 3615353736177453648, guid: a4deea23ce8f01940b09d9fd65dd0a50, type: 3}
+  enemyProjectilePrefab: {fileID: 7624734722909734874, guid: a2737e31c17fd22489f4370d9c921f95, type: 3}
 --- !u!114 &7579357252092631926
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,11 @@ public class Projectile : MonoBehaviour
     private GameObject explosionPrefab;
     // aim adjustment
     public bool aimable = false;
+
+    public bool enemy = false;
+
+    public ProjectileManager projManager;
+
     [SerializeField]
     private float aimTimer = 0.05f;
     private float lifeTime = 0;
@@ -17,7 +22,9 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     private int damage = 1;
 
+
     private Transform bulletTransform;
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +62,17 @@ public class Projectile : MonoBehaviour
         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 position = contact.point;
         Instantiate(explosionPrefab, position, rotation);
-        Destroy(gameObject);
+        //TODO figure otu why this is needed!!
+        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        projManager = gameManager.GetComponent<ProjectileManager>();
+        if (projManager != null)
+        {
+            projManager.DecreaseActiveQuantity(enemy, this.gameObject);
+        }
+        else
+        {
+            Debug.LogError("Error: couldnt find projectile manaager in this bullet!!");
+        }
+        //Destroy(gameObject);
     }
 }

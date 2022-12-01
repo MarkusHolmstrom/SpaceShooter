@@ -17,7 +17,7 @@ public class ProjectileManager : MonoBehaviour
     private GameObject projectilePrefab;
     [SerializeField]
     private GameObject enemyProjectilePrefab;
-
+    // TODO make pricate?
     public TypeProjectile enemyProjectile;
     public TypeProjectile projectile;
 
@@ -35,6 +35,9 @@ public class ProjectileManager : MonoBehaviour
             Enemy = false,
             QuantityActive = 0
         };
+
+        CreateProjectilePool(20, enemyProjectile);
+        CreateProjectilePool(20, projectile);
     }
 
     public List<GameObject> CreateProjectilePool(int quantity, TypeProjectile typeProj)
@@ -75,8 +78,10 @@ public class ProjectileManager : MonoBehaviour
         AddActiveQuantity(typeProj);
         if (typeProj.Enemy)
         {
+            enemyProjectiles[index].SetActive(true);
             return enemyProjectiles[index];
         }
+        projectiles[index].SetActive(true);
         return projectiles[index];
     }
 
@@ -92,11 +97,30 @@ public class ProjectileManager : MonoBehaviour
         }
     }
 
-    public void DecreaseActiveQuantity(TypeProjectile typeProj)
+    public void DecreaseActiveQuantity(bool enemy, GameObject proj)
     {
-        if (typeProj.QuantityActive > 0)
+        proj.SetActive(false);
+        if (enemy)
         {
-            typeProj.QuantityActive--;
+            if (enemyProjectile.QuantityActive > 0)
+            {
+                enemyProjectile.QuantityActive--;
+            }
+            else
+            {
+                enemyProjectile.QuantityActive = 0;
+            }
+        }
+        else
+        {
+            if (projectile.QuantityActive > 0)
+            {
+                projectile.QuantityActive--;
+            }
+            else
+            {
+                projectile.QuantityActive = 0;
+            }
         }
     }
 }

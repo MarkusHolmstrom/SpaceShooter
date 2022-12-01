@@ -41,5 +41,7 @@ public class LaserBlaster : MonoBehaviour
         Projectile proj = bulletSpawn.GetComponent<Projectile>();
         proj.ship = ship;
         proj.aimable = true;
+        proj.enemy = enemy;
+        proj.projManager = projManager;
     }
 }
