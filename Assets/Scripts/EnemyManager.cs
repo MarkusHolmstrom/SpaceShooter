@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour
 
     private static int currentIndex = 0;
 
-
+    // TODO create system for enemies when they die
     public List<GameObject> CreateEnemyPool(int quantity, GameObject enemyPrefab)
     {
         maxEnemies = quantity;

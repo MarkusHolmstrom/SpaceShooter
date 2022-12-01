@@ -30,6 +30,9 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         bulletTransform = transform;
+        //TODO figure otu why this is needed!!
+        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        projManager = gameManager.GetComponent<ProjectileManager>();
     }
 
     // Update is called once per frame
@@ -62,9 +65,7 @@ public class Projectile : MonoBehaviour
         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 position = contact.point;
         Instantiate(explosionPrefab, position, rotation);
-        //TODO figure otu why this is needed!!
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        projManager = gameManager.GetComponent<ProjectileManager>();
+        
         if (projManager != null)
         {
             projManager.DecreaseActiveQuantity(enemy, this.gameObject);

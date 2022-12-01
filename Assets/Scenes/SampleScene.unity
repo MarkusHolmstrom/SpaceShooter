@@ -416,18 +416,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 154300739153943483, guid: b975050a1af2e5f478955f48c4988b89, type: 3}
-      propertyPath: XMAX
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 154300739153943483, guid: b975050a1af2e5f478955f48c4988b89, type: 3}
-      propertyPath: YMAX
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 154300739153943483, guid: b975050a1af2e5f478955f48c4988b89, type: 3}
-      propertyPath: RELOAD_TIMER
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1588110311905518417, guid: b975050a1af2e5f478955f48c4988b89, type: 3}
       propertyPath: m_Name
       value: PlayerShip

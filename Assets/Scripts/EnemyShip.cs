@@ -26,7 +26,7 @@ public class EnemyShip : MonoBehaviour
     private GameObject bullet;
     [SerializeField]
     private float RELOAD_TIMER = 2.0f;
-    [SerializeField]
+
     private float reloadTime;
 
     private bool reloading = true;
@@ -73,7 +73,7 @@ public class EnemyShip : MonoBehaviour
         foundZone = IsWithinScreenZone();
         if (foundZone)
         {
-            shipTransform.Translate(shipSpeed * 0.1f * Time.deltaTime * Vector3.forward);
+            shipTransform.Translate(shipSpeed * 0.2f * Time.deltaTime * Vector3.forward);
         }
         else
         {
@@ -129,13 +129,6 @@ public class EnemyShip : MonoBehaviour
     public void DoDamage(int damage)
     {
         Health -= damage;
-        //if (Health > 2)
-        //{
-        //    RoofPart.SetParent(null);
-        //    Rigidbody rb = RoofPart.gameObject.AddComponent<Rigidbody>();
-        //    rb.isKinematic = false;
-        //    rb.useGravity = true;
-        //}
         if (Health <= 0)
         {
             gameObject.SetActive(false);

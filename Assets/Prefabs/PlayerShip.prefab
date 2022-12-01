@@ -56,11 +56,12 @@ MonoBehaviour:
   laserBlaster: {fileID: 2346359699953842276}
   muzzleLocation: {fileID: 4636076519035556446}
   moveSpeed: 5
-  YMAX: 8
-  XMAX: 13
+  YMAX: 14
+  XMAX: 26
   bullet: {fileID: 3615353736177453648, guid: a4deea23ce8f01940b09d9fd65dd0a50, type: 3}
   RELOAD_TIMER: 1
   reloadTime: 0
+  Health: 10
 --- !u!65 &3956222773075702086
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -83,7 +84,7 @@ Rigidbody:
   m_GameObject: {fileID: 1588110311905518417}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.5
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -426,6 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16f345a10dcf4345ba7aa84932a74bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projManager: {fileID: 0}
 --- !u!1 &6733678024222723817
 GameObject:
   m_ObjectHideFlags: 0
