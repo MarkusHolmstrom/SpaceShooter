@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.H))
         {
-            Debug.Log("New wave incoming!!");
             enemyManager.SpawnEnemies(spawnsPerWave);
         }
     }

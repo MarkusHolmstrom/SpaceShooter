@@ -21,7 +21,11 @@ public class Projectile : MonoBehaviour
     private int bulletSpeed = 10;
     [SerializeField]
     private int damage = 1;
-
+    
+    [SerializeField]
+    private int xMax = 30;
+    [SerializeField]
+    private int yMax = 20;
 
     private Transform bulletTransform;
 
@@ -46,12 +50,29 @@ public class Projectile : MonoBehaviour
             Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.forward) * ship.transform.rotation;
             bulletTransform.rotation = newRotation;
         }
-        
+        CheckIfOutOfBounds();
+    }
+
+    private void CheckIfOutOfBounds()
+    {
+        if (bulletTransform.position.x >= xMax || bulletTransform.position.y >= yMax ||
+            bulletTransform.position.x <= -xMax || bulletTransform.position.y <= -yMax)
+        {
+            if (projManager != null)
+            {
+                Debug.Log("this bullet was a miss!");
+                projManager.DecreaseActiveQuantity(enemy, this.gameObject);
+            }
+            else
+            {
+                Debug.LogError("Error: couldnt find projectile manaager in this bullet!!");
+            }
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
             PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
             ps.DoDamage(damage);

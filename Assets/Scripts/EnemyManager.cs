@@ -8,10 +8,10 @@ public class EnemyManager : MonoBehaviour
     private int maxEnemies;
 
     private List<GameObject> enemies = new List<GameObject>();
+    private List<GameObject> unusedEnemies = new List<GameObject>();
 
     private static int currentIndex = 0;
 
-    // TODO create system for enemies when they die
     public List<GameObject> CreateEnemyPool(int quantity, GameObject enemyPrefab)
     {
         maxEnemies = quantity;
@@ -20,6 +20,7 @@ public class EnemyManager : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab);
             enemy.SetActive(false);
             enemies.Add(enemy);
+            unusedEnemies.Add(enemy);
         }
         return enemies;
     }
@@ -31,11 +32,11 @@ public class EnemyManager : MonoBehaviour
             currentIndex = 0;
         }
 
-        quantity += currentIndex;
-        for (int i = currentIndex; i < quantity && enemies.Count > i; i++)
+        for (int i = 0; i < quantity && unusedEnemies.Count > i; i++)
         {
-            enemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
-            enemies[i].SetActive(true);
+            unusedEnemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
+            unusedEnemies[i].SetActive(true);
+            unusedEnemies.Remove(unusedEnemies[i]);
         }
         currentIndex += quantity;
 
@@ -49,18 +50,23 @@ public class EnemyManager : MonoBehaviour
         float randY = 30;
         if (test == 0) //curIndex <= MAX_QUANTITY_ENEMIES / 2)
         {
-            randX = LCGRandomGenerator.RandomLCGfloat(20, 40);
-            randY = LCGRandomGenerator.RandomLCGfloat(-30, 30);
+            randX = LCGRandomGenerator.RandomLCGfloat(20, 50);
+            randY = LCGRandomGenerator.RandomLCGfloat(-40, 40);
             test++;
         }
         else if (test == 1) //curIndex <= MAX_QUANTITY_ENEMIES)
         {
-            randX = LCGRandomGenerator.RandomLCGfloat(-40, 40);
-            randY = LCGRandomGenerator.RandomLCGfloat(-15, -30);
+            randX = LCGRandomGenerator.RandomLCGfloat(-40, 50);
+            randY = LCGRandomGenerator.RandomLCGfloat(-20, -40);
             test = 0;
         }
         spawnLocation.x = randX;
         spawnLocation.y = randY;
         return spawnLocation;
+    }
+    // TODO change to eventsystem or smthing
+    public void AddUnusedEnemy(GameObject enemyShip)
+    {
+        unusedEnemies.Add(enemyShip);
     }
 }

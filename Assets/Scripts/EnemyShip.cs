@@ -37,9 +37,9 @@ public class EnemyShip : MonoBehaviour
 
     // Screen zone as a target, struct instead?
     [SerializeField]
-    private int xMax = 14;
+    private int xMax = 22;
     [SerializeField]
-    private int yMax = 8;
+    private int yMax = 12;
 
     private bool foundZone = false;
 
@@ -48,16 +48,23 @@ public class EnemyShip : MonoBehaviour
 
     [SerializeField]
     private int Health = 4;
+
     [SerializeField]
-    private Transform RoofPart;
+    private EnemyManager enemyManager;
+
+    private GameObject gameManager;
+
+
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         shipTransform = transform;
         player = GameObject.FindGameObjectWithTag("Player");
         // =?
         reloadTime = Random.Range(-2.0f, RELOAD_TIMER);// LCGRandomGenerator.RandomLCGfloat(-2.0f, RELOAD_TIMER);
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        enemyManager = gameManager.GetComponent<EnemyManager>();
     }
 
     // Update is called once per frame
@@ -104,12 +111,16 @@ public class EnemyShip : MonoBehaviour
 
     void UpdateRotation()
     {
-        shipTransform.LookAt(Vector3.zero - player.transform.position, Vector3.up);
+        shipTransform.LookAt(player.transform.position, Vector3.up);
         
     }
 
     void ShootCycle()
     {
+        if (!foundZone)
+        {
+            return;
+        }
         if (!reloading && laserBlaster)
         {
             laserBlaster.ShootBullet(this.gameObject, true, muzzleLocation.position);
@@ -132,6 +143,7 @@ public class EnemyShip : MonoBehaviour
         if (Health <= 0)
         {
             gameObject.SetActive(false);
+            enemyManager.AddUnusedEnemy(this.gameObject);
         }
     }
 }
