@@ -84,7 +84,10 @@ public class ProjectileManager : MonoBehaviour
             enemyProjectiles[index].SetActive(true);
             return enemyProjectiles[index];
         }
-        projectiles[index].SetActive(true);
+        GameObject proj = projectiles[index];
+        proj.SetActive(true);
+        activeProjectiles.Add(proj);
+        Debug.Log(activeProjectiles.Count);
         return projectiles[index];
     }
 
@@ -102,6 +105,7 @@ public class ProjectileManager : MonoBehaviour
 
     public void DecreaseActiveQuantity(bool enemy, GameObject proj)
     {
+        activeProjectiles.Remove(proj);
         proj.SetActive(false);
         if (enemy)
         {
