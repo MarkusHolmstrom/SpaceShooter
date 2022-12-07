@@ -7,23 +7,24 @@ using UnityEngine.Rendering.VirtualTexturing;
 using Unity.Burst;
 //using Unity.Entities;
 using UnityEngine.Jobs;
+using Unity.Mathematics;
 
 // https://docs.unity3d.com/ScriptReference/Unity.Jobs.IJob.html
 // An example job which increments all the numbers of an array.
+
+// another example with float3s:
+// https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/DOTS_Guide/jobs_tutorial/README.md
+
 public struct IncrementJob : IJob
 {
-    // The data which a job needs to use should all
-    // be included as fields of the struct.
-    public NativeArray<float> Nums;
-    public float Increment;
-
+    [ReadOnly] public NativeArray<float3> TargetPositions;
+    [ReadOnly] public NativeArray<float3> SeekerPositions;
+    public NativeArray<float3> NearestTargetPositions;
+    
     // Execute() is called when the job runs.
     public void Execute()
     {
-        for (int i = 0; i < Nums.Length; i++)
-        {
-            Nums[i] += Increment;
-        }
+        
     }
 }
 

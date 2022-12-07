@@ -11,12 +11,15 @@ public struct TypeProjectile
 
 public class ProjectileManager : MonoBehaviour
 {
+    public List<GameObject> activeProjectiles = new List<GameObject>();
     private List<GameObject> enemyProjectiles = new List<GameObject>();
     private List<GameObject> projectiles = new List<GameObject>();
     [SerializeField]
     private GameObject projectilePrefab;
     [SerializeField]
     private GameObject enemyProjectilePrefab;
+    [SerializeField]
+    private int projectileQuantity = 40;
     // TODO make pricate?
     public TypeProjectile enemyProjectile;
     public TypeProjectile projectile;
@@ -36,8 +39,8 @@ public class ProjectileManager : MonoBehaviour
             QuantityActive = 0
         };
 
-        CreateProjectilePool(20, enemyProjectile);
-        CreateProjectilePool(20, projectile);
+        CreateProjectilePool(projectileQuantity, enemyProjectile);
+        CreateProjectilePool(projectileQuantity, projectile);
     }
 
     public List<GameObject> CreateProjectilePool(int quantity, TypeProjectile typeProj)

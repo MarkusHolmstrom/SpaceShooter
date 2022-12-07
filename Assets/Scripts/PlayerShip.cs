@@ -115,7 +115,7 @@ public class PlayerShip : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
-            Debug.Log("Player dead!");
+            Debug.Log("Player dead! NOOOOO stop playing! youre dead, you here me? STop!!! STOP this MADNESS now GOD Dammit!!!");
         }
     }
     

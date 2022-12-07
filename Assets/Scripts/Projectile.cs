@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class Projectile : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         bulletTransform = transform;
         //TODO figure otu why this is needed!!
@@ -60,7 +61,6 @@ public class Projectile : MonoBehaviour
         {
             if (projManager != null)
             {
-                Debug.Log("this bullet was a miss!");
                 projManager.DecreaseActiveQuantity(enemy, this.gameObject);
             }
             else
@@ -72,21 +72,25 @@ public class Projectile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
-            ps.DoDamage(damage);
-        }
-        else if (collision.gameObject.tag == "AIShip")
-        {
-            EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
-            ps.DoDamage(damage);
-        }
-        ContactPoint contact = collision.contacts[0];
-        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, contact.normal);
-        Vector3 position = contact.point;
-        Instantiate(explosionPrefab, position, rotation);
-        
+        //if (collision.gameObject.CompareTag("Player"))
+        //{
+        //    PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
+        //    ps.DoDamage(damage);
+        //}
+        //else if (collision.gameObject.tag == "AIShip")
+        //{
+        //    EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
+        //    ps.DoDamage(damage);
+        //}
+        //ContactPoint contact = collision.contacts[0];
+        //Vector3 position = contact.point;
+        //OnCollision(position);
+    }
+
+    private void OnCollision(Vector3 position)
+    {
+        Instantiate(explosionPrefab, position, Quaternion.identity);
+
         if (projManager != null)
         {
             projManager.DecreaseActiveQuantity(enemy, this.gameObject);
@@ -95,6 +99,5 @@ public class Projectile : MonoBehaviour
         {
             Debug.LogError("Error: couldnt find projectile manaager in this bullet!!");
         }
-        //Destroy(gameObject);
     }
 }

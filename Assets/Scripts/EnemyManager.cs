@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    private int maxEnemies;
-
+    public List<GameObject> activeEnemies = new List<GameObject>();
     private List<GameObject> enemies = new List<GameObject>();
+    private int maxEnemies;
     private List<GameObject> unusedEnemies = new List<GameObject>();
 
     private static int currentIndex = 0;
@@ -36,6 +36,7 @@ public class EnemyManager : MonoBehaviour
         {
             unusedEnemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
             unusedEnemies[i].SetActive(true);
+            activeEnemies.Add(unusedEnemies[i]);
             unusedEnemies.Remove(unusedEnemies[i]);
         }
         currentIndex += quantity;
@@ -65,8 +66,9 @@ public class EnemyManager : MonoBehaviour
         return spawnLocation;
     }
     // TODO change to eventsystem or smthing
-    public void AddUnusedEnemy(GameObject enemyShip)
+    public void UpdateEnemyLists(GameObject enemyShip)
     {
+        activeEnemies.Remove(enemyShip);
         unusedEnemies.Add(enemyShip);
     }
 }

@@ -236,13 +236,13 @@ MonoBehaviour:
   muzzleLocation: {fileID: 6643652390232329127}
   bullet: {fileID: 7624734722909734874, guid: a2737e31c17fd22489f4370d9c921f95, type: 3}
   RELOAD_TIMER: 2
-  reloadTime: 0
+  explosionPrefab: {fileID: 5716202492813624842, guid: 883edcc1a39d4c148b9dcecc3d597690, type: 3}
   shipSpeed: 3
   xMax: 14
   yMax: 8
   player: {fileID: 0}
   Health: 4
-  RoofPart: {fileID: 4395814214447883628}
+  enemyManager: {fileID: 0}
 --- !u!54 &8658257128692104591
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -481,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16f345a10dcf4345ba7aa84932a74bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projManager: {fileID: 0}
 --- !u!1 &6930398230669409016
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +506,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6930398230669409016}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.705}
+  m_LocalPosition: {x: 0, y: 0, z: 1.947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

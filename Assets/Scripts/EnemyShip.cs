@@ -4,14 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Pool;
-
-struct ScreenZone
-{
-    public int xMax;
-    public int yMax;
-    public int xMin;
-    public int yMin;
-}
+using UnityEngine.UIElements;
 
 public class EnemyShip : MonoBehaviour
 {
@@ -27,6 +20,9 @@ public class EnemyShip : MonoBehaviour
     [SerializeField]
     private float RELOAD_TIMER = 2.0f;
 
+    [SerializeField]
+    private GameObject explosionPrefab;
+
     private float reloadTime;
 
     private bool reloading = true;
@@ -39,7 +35,7 @@ public class EnemyShip : MonoBehaviour
     [SerializeField]
     private int xMax = 22;
     [SerializeField]
-    private int yMax = 12;
+    private int yMax = 14;
 
     private bool foundZone = false;
 
@@ -51,10 +47,7 @@ public class EnemyShip : MonoBehaviour
 
     [SerializeField]
     private EnemyManager enemyManager;
-
     private GameObject gameManager;
-
-
 
     // Start is called before the first frame update
     void Awake()
@@ -62,7 +55,7 @@ public class EnemyShip : MonoBehaviour
         shipTransform = transform;
         player = GameObject.FindGameObjectWithTag("Player");
         // =?
-        reloadTime = Random.Range(-2.0f, RELOAD_TIMER);// LCGRandomGenerator.RandomLCGfloat(-2.0f, RELOAD_TIMER);
+        reloadTime = LCGRandomGenerator.RandomLCGfloat(-2.0f, RELOAD_TIMER);
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
         enemyManager = gameManager.GetComponent<EnemyManager>();
     }
@@ -142,8 +135,14 @@ public class EnemyShip : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
-            gameObject.SetActive(false);
-            enemyManager.AddUnusedEnemy(this.gameObject);
+            OnDeath();
         }
+    }
+
+    private void OnDeath()
+    {
+        Instantiate(explosionPrefab, shipTransform.position, Quaternion.identity);
+        gameObject.SetActive(false);
+        enemyManager.UpdateEnemyLists(this.gameObject);
     }
 }
