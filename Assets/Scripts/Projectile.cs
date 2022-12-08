@@ -15,6 +15,9 @@ public class Projectile : MonoBehaviour
 
     public ProjectileManager projManager;
 
+    public TypeProjectile projectile;
+    public int typeIndex;
+
     [SerializeField]
     private float aimTimer = 0.05f;
     private float lifeTime = 0;
@@ -61,7 +64,7 @@ public class Projectile : MonoBehaviour
         {
             if (projManager != null)
             {
-                projManager.DecreaseActiveQuantity(enemy, this.gameObject);
+                projManager.DeActivateProjectile(enemy, typeIndex, projectile);
             }
             else
             {
@@ -72,19 +75,19 @@ public class Projectile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        //if (collision.gameObject.CompareTag("Player"))
-        //{
-        //    PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
-        //    ps.DoDamage(damage);
-        //}
-        //else if (collision.gameObject.tag == "AIShip")
-        //{
-        //    EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
-        //    ps.DoDamage(damage);
-        //}
-        //ContactPoint contact = collision.contacts[0];
-        //Vector3 position = contact.point;
-        //OnCollision(position);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
+            ps.DoDamage(damage);
+        }
+        else if (collision.gameObject.tag == "AIShip")
+        {
+            EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
+            ps.DoDamage(damage);
+        }
+        ContactPoint contact = collision.contacts[0];
+        Vector3 position = contact.point;
+        OnCollision(position);
     }
 
     private void OnCollision(Vector3 position)
@@ -93,7 +96,7 @@ public class Projectile : MonoBehaviour
 
         if (projManager != null)
         {
-            projManager.DecreaseActiveQuantity(enemy, this.gameObject);
+            projManager.DeActivateProjectile(enemy, typeIndex, projectile);
         }
         else
         {

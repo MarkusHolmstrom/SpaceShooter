@@ -6,6 +6,8 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     [SerializeField]
+    private int expansionSpeed = 5;
+    [SerializeField]
     private float lifeExpancy = 1.5f;
     private float lifeTime = 0;
 
@@ -22,7 +24,8 @@ public class Explosion : MonoBehaviour
     {
         if (lifeTime < lifeExpancy)
         {
-            explTransform.localScale += new Vector3(Time.deltaTime, Time.deltaTime, Time.deltaTime);
+            float exp = expansionSpeed * Time.deltaTime;
+            explTransform.localScale += new Vector3(exp, exp, exp);
             lifeTime += Time.deltaTime;
         }
         else

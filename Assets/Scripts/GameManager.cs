@@ -29,6 +29,8 @@ namespace Space
         public NativeArray<CollisionObject> ShipObjects;
         public NativeArray<CollisionObject> ProjectileObjects;
         public int MinDistanceForHit = 2;
+        public NativeArray<int> ShipCollisionIDs;
+        public NativeArray<int> ProjectileCollisionIDs;
 
         public static Transform[] shipTransforms;
         public static Transform[] projectileTransforms;
@@ -49,6 +51,8 @@ namespace Space
         {
             ShipObjects.Dispose();
             ProjectileObjects.Dispose();
+            ProjectileCollisionIDs.Dispose();
+            ShipCollisionIDs.Dispose();
         }
 
         // Update is called once per frame
@@ -73,20 +77,19 @@ namespace Space
 
         private void SetupTransforms()
         {
-            // vad hander nu?
             int shipActive = enemyManager.activeEnemies.Count;
             int projActive = projManager.activeProjectiles.Count;
             ShipObjects = new NativeArray<CollisionObject>(shipActive, Allocator.Persistent);
             ProjectileObjects = new NativeArray<CollisionObject>(projActive, Allocator.Persistent);
 
             projectileTransforms = new Transform[projActive];
-            Debug.Log(projManager.activeProjectiles.Count);
+            //Debug.Log(projManager.activeProjectiles.Count);
             for (int i = 0; i < projActive; i++)
             {
                 GameObject go = projManager.activeProjectiles[i];
                 projectileTransforms[i] = go.transform;
             }
-            Debug.LogWarning(enemyManager.activeEnemies.Count);
+            //Debug.LogWarning(enemyManager.activeEnemies.Count);
             shipTransforms = new Transform[shipActive];
             for (int i = 0; i < shipActive; i++)
             {
@@ -97,7 +100,7 @@ namespace Space
 
         private void SetPositions()
         {
-            if (projManager.activeProjectiles.Count < 1)
+            if (true)
             {
                 return;
             }
@@ -117,11 +120,17 @@ namespace Space
                 ProjectileObjects[i] = Projectile;
             }
 
+            ShipCollisionIDs = new NativeArray<int>(100, Allocator.Persistent);
+            ProjectileCollisionIDs = new NativeArray<int>(100, Allocator.Persistent);
+
+
             LookForCollisionsJob collisionsJob = new LookForCollisionsJob
             {
                 Ships = ShipObjects,
                 Projectiles = ProjectileObjects,
-                MinDistanceForHit = this.MinDistanceForHit
+                MinDistanceForHit = this.MinDistanceForHit,
+                ShipCollisionIDs = this.ShipCollisionIDs,
+                ProjectileCollisionIDs = this.ProjectileCollisionIDs
             };
 
             // Schedule() puts the job instance on the job queue.
@@ -134,12 +143,17 @@ namespace Space
 
             if (collisionsJob.Collision)
             {
+                Debug.Log(collisionsJob.ProjectileCollisionIDs);
                 foreach (int ID in collisionsJob.ProjectileCollisionIDs)
                 {
+                    Debug.Log("Nu kommer proj id:");
+
                     Debug.Log(ID);
                 }
                 foreach (int ID in collisionsJob.ShipCollisionIDs)
                 {
+                    Debug.LogWarning("Nu kommer ship id:");
+
                     Debug.LogWarning(ID);
                 }
             }

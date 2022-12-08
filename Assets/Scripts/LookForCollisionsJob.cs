@@ -7,6 +7,7 @@ using Unity.Mathematics;
 
 namespace SpaceJobs
 {
+    [BurstCompile]
     public struct CollisionObject
     {
         public CollisionObject(float3 Position, int ID)
@@ -30,8 +31,11 @@ namespace SpaceJobs
         public bool Collision;
         // returns lists of ID for objects if Collision is true
 
-        public List<int> ShipCollisionIDs;
-        public List<int> ProjectileCollisionIDs;
+        public NativeArray<int> ShipCollisionIDs;
+        public NativeArray<int> ProjectileCollisionIDs;
+
+        private int shipIDCount;
+        private int projIDCount;
 
         // Execute() is called when the job runs.
         public void Execute()
@@ -47,8 +51,10 @@ namespace SpaceJobs
                     if (distSq < MinDistanceForHit)
                     {
                         Collision = true;
-                        ProjectileCollisionIDs.Add(Projectiles[i].ID);
-                        ShipCollisionIDs.Add(Ships[i].ID);
+                        projIDCount++;
+                        ProjectileCollisionIDs[projIDCount] = Projectiles[i].ID;
+                        shipIDCount++;
+                        ShipCollisionIDs[shipIDCount] = Ships[i].ID;
                     }
                 }
             }

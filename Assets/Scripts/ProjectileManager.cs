@@ -4,129 +4,135 @@ using UnityEngine;
 
 public struct TypeProjectile
 {
-    public bool Enemy;
-    public int QuantityActive;
-    public int MaxActive;
+    public GameObject Projectile { get; set; }
+    public bool Enemy { get; set; }
+    public bool Active { get; set; }
+    public int Index { get; set; }
+
+    public void SetActive(bool active)
+    {
+        Active = active;
+    }
+    public void SetIndex(int index)
+    {
+        Index = index;
+    }
 }
 
 public class ProjectileManager : MonoBehaviour
 {
     public List<GameObject> activeProjectiles = new List<GameObject>();
-    private List<GameObject> enemyProjectiles = new List<GameObject>();
-    private List<GameObject> projectiles = new List<GameObject>();
+    //private List<GameObject> enemyProjectiles = new List<GameObject>();
+    //private List<GameObject> projectiles = new List<GameObject>();
     [SerializeField]
     private GameObject projectilePrefab;
     [SerializeField]
     private GameObject enemyProjectilePrefab;
     [SerializeField]
-    private int projectileQuantity = 40;
-    // TODO make pricate?
-    public TypeProjectile enemyProjectile;
-    public TypeProjectile projectile;
+    private int projectileQuantity = 5;
+    
+    public List<TypeProjectile> enemyProjectiles = new List<TypeProjectile>();
+    public List<TypeProjectile> projectiles = new List<TypeProjectile>();
 
     // Start is called before the first frame update
     void Awake()
     {
-        enemyProjectile = new TypeProjectile
-        {
-            Enemy = true,
-            QuantityActive = 0
-        };
+        
 
-        projectile = new TypeProjectile
-        {
-            Enemy = false,
-            QuantityActive = 0
-        };
-
-        CreateProjectilePool(projectileQuantity, enemyProjectile);
-        CreateProjectilePool(projectileQuantity, projectile);
+        CreateProjectilePool(projectileQuantity);
     }
 
-    public List<GameObject> CreateProjectilePool(int quantity, TypeProjectile typeProj)
+    private void CreateProjectilePool(int quantity)
     {
-        typeProj.MaxActive += quantity;
         for (int i = 0; i < quantity; i++)
         {
-            GameObject proj;
-            if (typeProj.Enemy)
+            // Spawn enemyproj for pool and add to struct and lists
+            GameObject enemyProjGO = Instantiate(enemyProjectilePrefab);
+
+            TypeProjectile enemyProjectile = new TypeProjectile
             {
-                proj = Instantiate(enemyProjectilePrefab);
-                enemyProjectiles.Add(proj);
-            }
-            else
+                Projectile = enemyProjGO,
+                Enemy = true,
+                Active = false,
+                Index = i
+            };
+            enemyProjGO.GetComponent<Projectile>().projectile = enemyProjectile;
+            enemyProjGO.GetComponent<Projectile>().typeIndex = i;
+            Debug.LogWarning(enemyProjGO.GetComponent<Projectile>().typeIndex);
+
+            enemyProjGO.SetActive(false);
+            enemyProjectiles.Add(enemyProjectile);
+
+            // Spawn players proj for pool and add to struct and lists
+            GameObject projGO = Instantiate(projectilePrefab);
+
+            TypeProjectile projectile = new TypeProjectile
             {
-                proj = Instantiate(projectilePrefab);
-                projectiles.Add(proj);
-            }
-            proj.SetActive(false);
+                Projectile = projGO,
+                Enemy = false,
+                Active = false,
+                Index = i
+            };
+            projGO.GetComponent<Projectile>().projectile = projectile;
+            projGO.GetComponent<Projectile>().typeIndex = i;
+            projGO.SetActive(false);
+            projectiles.Add(projectile);
+
         }
-        return projectiles;
     }
 
     public GameObject GetPrefab(bool enemy)
     {
         if (enemy)
         {
-            return GetNewProjectile(enemyProjectile.QuantityActive + 1, enemyProjectile);
+            return GetNewProjectile(enemyProjectiles);
         }
         else
         {
-            return GetNewProjectile(projectile.QuantityActive + 1, projectile);
+            return GetNewProjectile(projectiles);
         }
     }
 
-    private GameObject GetNewProjectile(int index, TypeProjectile typeProj)
+    private GameObject GetNewProjectile(List<TypeProjectile> typeProjs)
     {
-        AddActiveQuantity(typeProj);
-        if (typeProj.Enemy)
+        for (int i = 0; i < typeProjs.Count; i++)
         {
-            enemyProjectiles[index].SetActive(true);
-            return enemyProjectiles[index];
+            if (!typeProjs[i].Active)
+            {
+                typeProjs[i].SetActive(true);
+                typeProjs[i].Projectile.SetActive(true);
+                activeProjectiles.Add(typeProjs[i].Projectile);
+                return typeProjs[i].Projectile;
+            }
         }
-        GameObject proj = projectiles[index];
-        proj.SetActive(true);
-        activeProjectiles.Add(proj);
-        Debug.Log(activeProjectiles.Count);
-        return projectiles[index];
+        CreateProjectilePool(5);
+        return GetNewProjectile(typeProjs);
     }
 
-    private void AddActiveQuantity(TypeProjectile typeProj)
+    public void DeActivateProjectile(bool enemy, int index, TypeProjectile proj)
     {
-        if (typeProj.QuantityActive < typeProj.MaxActive)
-        {
-            typeProj.QuantityActive++;
-        }
-        else
-        {
-            CreateProjectilePool(10, typeProj);
-        }
-    }
-
-    public void DecreaseActiveQuantity(bool enemy, GameObject proj)
-    {
-        activeProjectiles.Remove(proj);
-        proj.SetActive(false);
         if (enemy)
         {
-            if (enemyProjectile.QuantityActive > 0)
-            {
-                enemyProjectile.QuantityActive--;
-            }
-            else
-            {
-                enemyProjectile.QuantityActive = 0;
-            }
+            Deactivate(enemyProjectiles, index, proj);
         }
         else
         {
-            if (projectile.QuantityActive > 0)
+            Deactivate(projectiles, index, proj);
+        }
+    }
+
+    private void Deactivate(List<TypeProjectile> typeProjs, int index, TypeProjectile proj)
+    {
+        for (int i = 0; i < typeProjs.Count; i++)
+        {
+            //Debug.Log(typeProjs[i].Index + " " + proj.Index);
+            if (typeProjs[i].Active && typeProjs[i].Index == proj.Index)
             {
-                projectile.QuantityActive--;
-            }
-            else
-            {
-                projectile.QuantityActive = 0;
+                Debug.LogWarning("match!");
+                Debug.LogWarning(typeProjs[i].Projectile.name);
+                typeProjs[i].SetActive(false);
+                typeProjs[i].Projectile.SetActive(false);
+
             }
         }
     }
