@@ -114,6 +114,7 @@ public class ProjectileManager : MonoBehaviour
                 return typeProjs[i].Projectile;
             }
         }
+        Debug.Log("five minutes more...");
         CreateProjectilePool(5);
         return GetNewProjectile(enemy,typeProjs);
     }
@@ -134,8 +135,13 @@ public class ProjectileManager : MonoBehaviour
     {
         for (int i = 0; i < typeProjs.Count; i++)
         {
+            if (typeProjs[i] == null || proj == null)
+            {
+                //Debug.LogError("miss ref!!! " + i);
+                break;
+            }
             //Debug.Log(typeProjs[i].Index + " " + proj.Index);
-            if (typeProjs[i].Active && typeProjs[i].Index == proj.Index)
+            else if (typeProjs[i].Active && typeProjs[i].Index == proj.Index)
             {
                 Debug.LogWarning("match!");
                 typeProjs[i].SetActive(false);

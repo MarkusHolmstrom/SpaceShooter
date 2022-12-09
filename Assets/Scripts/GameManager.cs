@@ -6,10 +6,10 @@ using Unity.Collections;
 using Unity.Mathematics;
 using static UnityEngine.GraphicsBuffer;
 using Unity.Jobs;
-using SpaceJobs;
 using System.Linq;
+using Unity.VisualScripting;
 
-namespace Space
+namespace SpaceJobs
 {
     public class GameManager : MonoBehaviour
     {
@@ -60,9 +60,8 @@ namespace Space
                 enemyManager.SpawnEnemies(spawnsPerWave);
             }
 
-            SetupTransforms();
-            SetPositions();
-            CleanUp();
+            //SetupTransforms();
+            //SetPositions();
         }
 
         private void CreateEnemies(int quantity)
@@ -77,8 +76,16 @@ namespace Space
         {
             int shipActive = enemyManager.activeEnemies.Count;
             int projActive = projManager.activeProjectiles.Count;
-            ShipObjects = new NativeArray<CollisionObject>(shipActive, Allocator.Persistent);
-            ProjectileObjects = new NativeArray<CollisionObject>(projActive, Allocator.Persistent);
+            ShipObjects = new NativeArray<CollisionObject>(shipActive, Allocator.TempJob);
+            ProjectileObjects = new NativeArray<CollisionObject>(projActive, Allocator.TempJob);
+
+            //Debug.LogWarning(enemyManager.activeEnemies.Count);
+            shipTransforms = new Transform[shipActive];
+            for (int i = 0; i < shipActive; i++)
+            {
+                GameObject go = enemyManager.activeEnemies[i];
+                shipTransforms[i] = go.transform;
+            }
 
             projectileTransforms = new Transform[projActive];
             //Debug.Log(projManager.activeProjectiles.Count);
@@ -86,13 +93,6 @@ namespace Space
             {
                 GameObject go = projManager.activeProjectiles[i];
                 projectileTransforms[i] = go.transform;
-            }
-            //Debug.LogWarning(enemyManager.activeEnemies.Count);
-            shipTransforms = new Transform[shipActive];
-            for (int i = 0; i < shipActive; i++)
-            {
-                GameObject go = enemyManager.activeEnemies[i];
-                shipTransforms[i] = go.transform;
             }
         }
 
@@ -102,12 +102,14 @@ namespace Space
             //{
             //    return;
             //}
+            //Debug.Log("nu kor vi igen...");
             for (int i = 0; i < ShipObjects.Length; i++)
             {
                 CollisionObject Ship = new CollisionObject(
                     shipTransforms[i].localPosition, i);
 
                 ShipObjects[i] = Ship;
+                //Debug.Log(Ship.ObjectPosition + " " + Ship.ID);
             }
 
             for (int i = 0; i < ProjectileObjects.Length; i++)
@@ -116,32 +118,57 @@ namespace Space
                     projectileTransforms[i].localPosition, i);
                 
                 ProjectileObjects[i] = Projectile;
+                //Debug.Log(Projectile.ObjectPosition + " " + Projectile.ID);
             }
 
-            ShipCollisionIDs = new NativeArray<int>(100, Allocator.Persistent);
-            ProjectileCollisionIDs = new NativeArray<int>(100, Allocator.Persistent);
-
-
+            ShipCollisionIDs = new NativeArray<int>(100, Allocator.TempJob);
+            ProjectileCollisionIDs = new NativeArray<int>(100, Allocator.TempJob);
+            bool coll = false;
             LookForCollisionsJob collisionsJob = new LookForCollisionsJob
             {
                 Ships = ShipObjects,
                 Projectiles = ProjectileObjects,
                 MinDistanceForHit = this.MinDistanceForHit,
                 ShipCollisionIDs = this.ShipCollisionIDs,
-                ProjectileCollisionIDs = this.ProjectileCollisionIDs
+                ProjectileCollisionIDs = this.ProjectileCollisionIDs,
+                Collision = coll
             };
+            //Debug.Log(collisionsJob.Ships.Length + " " + collisionsJob.Projectiles.Length
+            //    + " " + collisionsJob.MinDistanceForHit + " " + collisionsJob.ShipCollisionIDs.Length
+            //    + " " + collisionsJob.ProjectileCollisionIDs.Length);
 
             // Schedule() puts the job instance on the job queue.
             JobHandle findHandle = collisionsJob.Schedule();
-
+            
+            if (coll)
+            {
+                Debug.Log(collisionsJob.test + " " + collisionsJob.shiptest);
+            }
+            //
+            
             // The Complete method will not return until the job represented by 
             // the handle finishes execution. Effectively, the main thread waits
             // here until the job is done.
             findHandle.Complete();
 
+            int shipIDCount = 0;
+            int projIDCount = 0;
+            
+            foreach (int h in ProjectileCollisionIDs)
+            {
+                if (h > 0)
+                {
+                    projIDCount++;
+                }
+            }
+            Debug.Log("efter: " + collisionsJob.test + " " + collisionsJob.shiptest);
+            if (coll)
+            {
+                Debug.Log("efter: " + shipIDCount + " " + projIDCount);
+            }
             if (collisionsJob.Collision)
             {
-                Debug.Log(collisionsJob.ProjectileCollisionIDs);
+                Debug.Log(collisionsJob.ProjectileCollisionIDs.Length);
                 foreach (int ID in collisionsJob.ProjectileCollisionIDs)
                 {
                     Debug.Log("Nu kommer proj id:");
@@ -156,6 +183,7 @@ namespace Space
                 }
             }
 
+            CleanUp();
         }
 
         private void CleanUp()

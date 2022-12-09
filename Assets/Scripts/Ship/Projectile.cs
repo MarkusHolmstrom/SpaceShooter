@@ -37,14 +37,20 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         bulletTransform = transform;
-        //TODO figure otu why this is needed!!
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         projManager = gameManager.GetComponent<ProjectileManager>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        //TODO figure otu why this is needed!!
+        if (this.gameObject.activeInHierarchy && ship == null)
+        {
+            Destroy(this.gameObject);
+        }
         bulletTransform.Translate(bulletSpeed * Time.deltaTime * Vector3.up);
         if (aimable && lifeTime < aimTimer)
         {
@@ -74,19 +80,19 @@ public class Projectile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        //if (collision.gameObject.CompareTag("Player"))
-        //{
-        //    PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
-        //    ps.DoDamage(damage);
-        //}
-        //else if (collision.gameObject.tag == "AIShip")
-        //{
-        //    EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
-        //    ps.DoDamage(damage);
-        //}
-        //ContactPoint contact = collision.contacts[0];
-        //Vector3 position = contact.point;
-        //OnCollision(position);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
+            ps.DoDamage(damage);
+        }
+        else if (collision.gameObject.tag == "AIShip")
+        {
+            EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
+            ps.DoDamage(damage);
+        }
+        ContactPoint contact = collision.contacts[0];
+        Vector3 position = contact.point;
+        OnCollision(position);
     }
 
     private void OnCollision(Vector3 position)
