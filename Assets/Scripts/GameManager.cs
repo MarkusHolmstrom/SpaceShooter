@@ -49,10 +49,7 @@ namespace Space
 
         public void OnDestroy()
         {
-            ShipObjects.Dispose();
-            ProjectileObjects.Dispose();
-            ProjectileCollisionIDs.Dispose();
-            ShipCollisionIDs.Dispose();
+            CleanUp();
         }
 
         // Update is called once per frame
@@ -65,6 +62,7 @@ namespace Space
 
             SetupTransforms();
             SetPositions();
+            CleanUp();
         }
 
         private void CreateEnemies(int quantity)
@@ -100,10 +98,10 @@ namespace Space
 
         private void SetPositions()
         {
-            if (true)
-            {
-                return;
-            }
+            //if (true)
+            //{
+            //    return;
+            //}
             for (int i = 0; i < ShipObjects.Length; i++)
             {
                 CollisionObject Ship = new CollisionObject(
@@ -158,6 +156,26 @@ namespace Space
                 }
             }
 
+        }
+
+        private void CleanUp()
+        {
+            if (ShipObjects.IsCreated)
+            {
+                ShipObjects.Dispose();
+            }
+            if (ProjectileObjects.IsCreated)
+            {
+                ProjectileObjects.Dispose();
+            }
+            if (ProjectileCollisionIDs.IsCreated)
+            {
+                ProjectileCollisionIDs.Dispose();
+            }
+            if (ShipCollisionIDs.IsCreated)
+            {
+                ShipCollisionIDs.Dispose();
+            }
         }
     }
 }

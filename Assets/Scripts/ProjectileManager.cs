@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct TypeProjectile
+public class TypeProjectile
 {
     public GameObject Projectile { get; set; }
     public bool Enemy { get; set; }
@@ -33,6 +33,8 @@ public class ProjectileManager : MonoBehaviour
     
     public List<TypeProjectile> enemyProjectiles = new List<TypeProjectile>();
     public List<TypeProjectile> projectiles = new List<TypeProjectile>();
+    public List<bool> actives = new List<bool>();
+    public List<bool> enemyActives = new List<bool>();
 
     // Start is called before the first frame update
     void Awake()
@@ -57,12 +59,10 @@ public class ProjectileManager : MonoBehaviour
                 Index = i
             };
             enemyProjGO.GetComponent<Projectile>().projectile = enemyProjectile;
-            enemyProjGO.GetComponent<Projectile>().typeIndex = i;
-            Debug.LogWarning(enemyProjGO.GetComponent<Projectile>().typeIndex);
 
             enemyProjGO.SetActive(false);
             enemyProjectiles.Add(enemyProjectile);
-
+            enemyActives.Add(false);
             // Spawn players proj for pool and add to struct and lists
             GameObject projGO = Instantiate(projectilePrefab);
 
@@ -74,10 +74,9 @@ public class ProjectileManager : MonoBehaviour
                 Index = i
             };
             projGO.GetComponent<Projectile>().projectile = projectile;
-            projGO.GetComponent<Projectile>().typeIndex = i;
             projGO.SetActive(false);
             projectiles.Add(projectile);
-
+            actives.Add(false);
         }
     }
 
@@ -85,43 +84,53 @@ public class ProjectileManager : MonoBehaviour
     {
         if (enemy)
         {
-            return GetNewProjectile(enemyProjectiles);
+            return GetNewProjectile(enemy, enemyProjectiles);
         }
         else
         {
-            return GetNewProjectile(projectiles);
+            return GetNewProjectile(enemy, projectiles);
         }
     }
 
-    private GameObject GetNewProjectile(List<TypeProjectile> typeProjs)
+    private GameObject GetNewProjectile(bool enemy, List<TypeProjectile> typeProjs)
     {
         for (int i = 0; i < typeProjs.Count; i++)
         {
-            if (!typeProjs[i].Active)
+            //if (!typeProjs[i].Active)
+            if (enemy && !enemyActives[i])
             {
                 typeProjs[i].SetActive(true);
                 typeProjs[i].Projectile.SetActive(true);
+                enemyActives[i] = true;
+                activeProjectiles.Add(typeProjs[i].Projectile);
+                return typeProjs[i].Projectile;
+            }
+            else if (!enemy && !actives[i])
+            {
+                typeProjs[i].SetActive(true);
+                typeProjs[i].Projectile.SetActive(true);
+                actives[i] = true;
                 activeProjectiles.Add(typeProjs[i].Projectile);
                 return typeProjs[i].Projectile;
             }
         }
         CreateProjectilePool(5);
-        return GetNewProjectile(typeProjs);
+        return GetNewProjectile(enemy,typeProjs);
     }
 
-    public void DeActivateProjectile(bool enemy, int index, TypeProjectile proj)
+    public void DeActivateProjectile(bool enemy, TypeProjectile proj)
     {
         if (enemy)
         {
-            Deactivate(enemyProjectiles, index, proj);
+            Deactivate(enemyProjectiles, proj);
         }
         else
         {
-            Deactivate(projectiles, index, proj);
+            Deactivate(projectiles, proj);
         }
     }
 
-    private void Deactivate(List<TypeProjectile> typeProjs, int index, TypeProjectile proj)
+    private void Deactivate(List<TypeProjectile> typeProjs, TypeProjectile proj)
     {
         for (int i = 0; i < typeProjs.Count; i++)
         {
@@ -129,7 +138,6 @@ public class ProjectileManager : MonoBehaviour
             if (typeProjs[i].Active && typeProjs[i].Index == proj.Index)
             {
                 Debug.LogWarning("match!");
-                Debug.LogWarning(typeProjs[i].Projectile.name);
                 typeProjs[i].SetActive(false);
                 typeProjs[i].Projectile.SetActive(false);
 
