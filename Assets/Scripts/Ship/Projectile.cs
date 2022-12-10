@@ -37,8 +37,8 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         bulletTransform = transform;
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        projManager = gameManager.GetComponent<ProjectileManager>();
+        GameObject projManagerGO = GameObject.FindGameObjectWithTag("ProjectileManager");
+        projManager = projManagerGO.GetComponent<ProjectileManager>();
 
     }
 
@@ -97,8 +97,15 @@ public class Projectile : MonoBehaviour
 
     private void OnCollision(Vector3 position)
     {
-        Instantiate(explosionPrefab, position, Quaternion.identity);
-
+        GameObject expl = VFXManager.SharedInstance.ActivateExplosion(true);
+        expl.transform.position = position;
+        //Instantiate(explosionPrefab, position, Quaternion.identity);
+        if (projectile == null)
+        {
+            this.gameObject.SetActive(false);
+            //TODO this is a temp thing, needs to call deactiveprojctiels aswell
+            return;
+        }
         if (projManager != null)
         {
             projManager.DeActivateProjectile(enemy, projectile);

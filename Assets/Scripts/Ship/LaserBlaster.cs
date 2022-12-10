@@ -8,13 +8,13 @@ public class LaserBlaster : MonoBehaviour
     [SerializeField]
     private ProjectileManager projManager;
 
-    private GameObject gameManager;
+    private GameObject projManagerGO;
 
     // Start is called before the first frame update
     void Awake()
     {
-        gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        projManager = gameManager.GetComponent<ProjectileManager>();
+        projManagerGO = GameObject.FindGameObjectWithTag("ProjectileManager");
+        projManager = projManagerGO.GetComponent<ProjectileManager>();
     }
 
     // Update is called once per frame
@@ -28,8 +28,9 @@ public class LaserBlaster : MonoBehaviour
     {
         // Add offset so the bullet spawns with correct rotation
         Quaternion newRotation = Quaternion.AngleAxis(0, Vector3.forward) * ship.transform.rotation;
-        GameObject bulletSpawn = Instantiate(projManager.GetPrefab(enemy), muzzlePosition, newRotation);
-        Projectile proj = bulletSpawn.GetComponent<Projectile>();
+        GameObject bullet = Instantiate(projManager.GetPrefab(enemy), muzzlePosition, newRotation);
+        bullet.SetActive(true);
+        Projectile proj = bullet.GetComponent<Projectile>();
         proj.ship = ship;
         proj.aimable = true;
         proj.enemy = enemy;

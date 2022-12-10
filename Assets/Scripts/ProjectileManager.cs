@@ -19,6 +19,7 @@ public class TypeProjectile
     }
 }
 
+[RequireComponent(typeof(ObjectPool))]
 public class ProjectileManager : MonoBehaviour
 {
     public List<GameObject> activeProjectiles = new List<GameObject>();
@@ -36,45 +37,53 @@ public class ProjectileManager : MonoBehaviour
     public List<bool> actives = new List<bool>();
     public List<bool> enemyActives = new List<bool>();
 
+    private ObjectPool objectPool;
+    private ObjectPool enemyObjectPool;
+
     // Start is called before the first frame update
     void Awake()
     {
-        
+
+        objectPool = GetComponent<ObjectPool>();
+        // Create a new list of gameobjects for enemy projectiles
+        enemyObjectPool = gameObject.AddComponent<ObjectPool>();
 
         CreateProjectilePool(projectileQuantity);
     }
 
     private void CreateProjectilePool(int quantity)
     {
+        objectPool.PoolObjects(quantity, projectilePrefab);
+        enemyObjectPool.PoolObjects(quantity, enemyProjectilePrefab);
+
         for (int i = 0; i < quantity; i++)
         {
             // Spawn enemyproj for pool and add to struct and lists
-            GameObject enemyProjGO = Instantiate(enemyProjectilePrefab);
+           // GameObject enemyProjGO = Instantiate(enemyProjectilePrefab);
 
             TypeProjectile enemyProjectile = new TypeProjectile
             {
-                Projectile = enemyProjGO,
+                Projectile = enemyObjectPool.pooledObjects[i],
                 Enemy = true,
                 Active = false,
                 Index = i
             };
-            enemyProjGO.GetComponent<Projectile>().projectile = enemyProjectile;
+            enemyObjectPool.pooledObjects[i].GetComponent<Projectile>().projectile = enemyProjectile;
 
-            enemyProjGO.SetActive(false);
             enemyProjectiles.Add(enemyProjectile);
             enemyActives.Add(false);
             // Spawn players proj for pool and add to struct and lists
-            GameObject projGO = Instantiate(projectilePrefab);
+            //GameObject projGO = Instantiate(projectilePrefab);
 
             TypeProjectile projectile = new TypeProjectile
             {
-                Projectile = projGO,
+                Projectile = objectPool.pooledObjects[i],
                 Enemy = false,
                 Active = false,
                 Index = i
             };
-            projGO.GetComponent<Projectile>().projectile = projectile;
-            projGO.SetActive(false);
+            objectPool.pooledObjects[i].GetComponent<Projectile>().projectile = projectile;
+            
             projectiles.Add(projectile);
             actives.Add(false);
         }
@@ -84,11 +93,13 @@ public class ProjectileManager : MonoBehaviour
     {
         if (enemy)
         {
-            return GetNewProjectile(enemy, enemyProjectiles);
+            return enemyObjectPool.GetPooledObject();
+            //return GetNewProjectile(enemy, enemyProjectiles);
         }
         else
         {
-            return GetNewProjectile(enemy, projectiles);
+            return objectPool.GetPooledObject();
+            //return GetNewProjectile(enemy, projectiles);
         }
     }
 
@@ -115,8 +126,7 @@ public class ProjectileManager : MonoBehaviour
             }
         }
         Debug.Log("five minutes more...");
-        CreateProjectilePool(5);
-        return GetNewProjectile(enemy,typeProjs);
+        return null;
     }
 
     public void DeActivateProjectile(bool enemy, TypeProjectile proj)
@@ -137,7 +147,8 @@ public class ProjectileManager : MonoBehaviour
         {
             if (typeProjs[i] == null || proj == null)
             {
-                //Debug.LogError("miss ref!!! " + i);
+
+                Debug.LogError("miss ref!!! " + i);
                 break;
             }
             //Debug.Log(typeProjs[i].Index + " " + proj.Index);

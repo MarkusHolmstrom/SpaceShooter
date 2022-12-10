@@ -6,9 +6,9 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     [SerializeField]
-    private int expansionSpeed = 5;
+    private int expansionSpeed = 3;
     [SerializeField]
-    private float lifeExpancy = 1.5f;
+    private float lifeExpancy = 1.2f;
     private float lifeTime = 0;
 
     private Transform explTransform;
@@ -31,6 +31,7 @@ public class Explosion : MonoBehaviour
         else
         {
             explTransform.localScale = Vector3.one;
+            lifeTime = 0;
             gameObject.SetActive(false);
         }
     }
