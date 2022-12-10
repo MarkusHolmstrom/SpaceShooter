@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ObjectPool))]
 public class EnemyManager : MonoBehaviour
 {
     public List<GameObject> activeEnemies = new List<GameObject>();
@@ -12,16 +13,17 @@ public class EnemyManager : MonoBehaviour
 
     private static int currentIndex = 0;
 
+    private ObjectPool enemyObjectPool;
+
+    private void Awake()
+    {
+        enemyObjectPool = GetComponent<ObjectPool>();
+    }
+
     public List<GameObject> CreateEnemyPool(int quantity, GameObject enemyPrefab)
     {
-        maxEnemies = quantity;
-        for (int i = 0; i < quantity; i++)
-        {
-            GameObject enemy = Instantiate(enemyPrefab);
-            enemy.SetActive(false);
-            enemies.Add(enemy);
-            unusedEnemies.Add(enemy);
-        }
+        enemyObjectPool.PoolObjects(quantity, enemyPrefab);
+        enemies = enemyObjectPool.pooledObjects;
         return enemies;
     }
 
@@ -31,13 +33,16 @@ public class EnemyManager : MonoBehaviour
         {
             currentIndex = 0;
         }
-
+        Debug.Log("hopp");
         for (int i = 0; i < quantity && unusedEnemies.Count > i; i++)
         {
-            unusedEnemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
-            unusedEnemies[i].SetActive(true);
-            activeEnemies.Add(unusedEnemies[i]);
-            unusedEnemies.Remove(unusedEnemies[i]);
+            GameObject go = enemyObjectPool.GetPooledObject();
+            go.transform.position = GetEnemySpawnLocation(currentIndex);
+            go.SetActive(true);
+            //unusedEnemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
+            //unusedEnemies[i].SetActive(true);
+            //activeEnemies.Add(unusedEnemies[i]);
+            //unusedEnemies.Remove(unusedEnemies[i]);
         }
         currentIndex += quantity;
 

@@ -11,16 +11,17 @@ using Unity.VisualScripting;
 
 namespace SpaceJobs
 {
+    [RequireComponent(typeof(EnemyManager))]
     public class GameManager : MonoBehaviour
     {
-        private const int MAX_QUANTITY_ENEMIES = 20;
-        private const int MAX_QUANTITY_PROJECTILES = 40;
+        private const int MAX_QUANTITY_ENEMIES = 100;
+
         [SerializeField]
         private GameObject enemyPrefab;
         [SerializeField]
         private List<GameObject> enemies = new List<GameObject>();
         [SerializeField]
-        private int spawnsPerWave = 5;
+        private int enemiesPerWave = 5;
         ObjectFactory objectFactory = new ObjectFactory();
         EnemyManager enemyManager;
         ProjectileManager projManager;
@@ -40,11 +41,13 @@ namespace SpaceJobs
         {
             enemyManager = GetComponent<EnemyManager>();
             projManager = GetComponent<ProjectileManager>();
+        }
+
+        private void Start()
+        {
             enemies = enemyManager.CreateEnemyPool(MAX_QUANTITY_ENEMIES, enemyPrefab);
             CreateEnemies(MAX_QUANTITY_ENEMIES);
-            enemyManager.SpawnEnemies(spawnsPerWave);
-
-            
+            enemyManager.SpawnEnemies(enemiesPerWave);
         }
 
         public void OnDestroy()
@@ -57,7 +60,8 @@ namespace SpaceJobs
         {
             if (Input.GetKeyUp(KeyCode.H))
             {
-                enemyManager.SpawnEnemies(spawnsPerWave);
+                // TODO set this as a timer asswell... 
+                enemyManager.SpawnEnemies(enemiesPerWave);
             }
 
             //SetupTransforms();

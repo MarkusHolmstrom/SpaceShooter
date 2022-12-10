@@ -141,7 +141,8 @@ public class EnemyShip : MonoBehaviour
 
     private void OnDeath()
     {
-        Instantiate(explosionPrefab, shipTransform.position, Quaternion.identity);
+        GameObject expl = VFXManager.SharedInstance.ActivateExplosion(false);
+        expl.transform.position = shipTransform.position;
         gameObject.SetActive(false);
         enemyManager.UpdateEnemyLists(this.gameObject);
     }

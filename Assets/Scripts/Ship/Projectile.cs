@@ -75,6 +75,7 @@ public class Projectile : MonoBehaviour
             {
                 Debug.LogError("Error: couldnt find projectile manaager in this bullet!!");
             }
+            gameObject.SetActive(false);
         }
     }
 
@@ -102,7 +103,7 @@ public class Projectile : MonoBehaviour
         //Instantiate(explosionPrefab, position, Quaternion.identity);
         if (projectile == null)
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
             //TODO this is a temp thing, needs to call deactiveprojctiels aswell
             return;
         }

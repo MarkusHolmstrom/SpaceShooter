@@ -148,7 +148,7 @@ public class ProjectileManager : MonoBehaviour
             if (typeProjs[i] == null || proj == null)
             {
 
-                Debug.LogError("miss ref!!! " + i);
+                //Debug.LogError("miss ref!!! " + i);
                 break;
             }
             //Debug.Log(typeProjs[i].Index + " " + proj.Index);
