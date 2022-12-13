@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 3615353736177453649}
   - component: {fileID: 76336563538720948}
   - component: {fileID: 3974672082699793767}
+  - component: {fileID: 2940889121859687229}
+  - component: {fileID: 3575242912953698629}
+  - component: {fileID: 279367751449504175}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -49,9 +52,13 @@ MonoBehaviour:
   ship: {fileID: 0}
   explosionPrefab: {fileID: 5716202492813624842, guid: 52f2bd38811bfc5408b95a8a15ef4bd1, type: 3}
   aimable: 0
+  enemy: 0
+  projManager: {fileID: 0}
   aimTimer: 0.1
   bulletSpeed: 10
   damage: 1
+  xMax: 30
+  yMax: 20
 --- !u!54 &3974672082699793767
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -66,8 +73,48 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 104
   m_CollisionDetection: 0
+--- !u!114 &2940889121859687229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615353736177453648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17fcebd79f5e61944808baf1e83adc30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  direction: {x: 0, y: 1, z: 0}
+--- !u!114 &3575242912953698629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615353736177453648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 1
+--- !u!114 &279367751449504175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615353736177453648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de10982581bc93a4199d135c1a7205cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 5
 --- !u!1 &6000649220006691798
 GameObject:
   m_ObjectHideFlags: 0

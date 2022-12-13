@@ -36,9 +36,13 @@ namespace SpaceJobs
         public static Transform[] shipTransforms;
         public static Transform[] projectileTransforms;
 
+        [SerializeField]
+        private BulletMovement bulletMovement;
+
         // Start is called before the first frame update
         void Awake()
         {
+            bulletMovement = new BulletMovement();
             enemyManager = GetComponent<EnemyManager>();
             projManager = GetComponent<ProjectileManager>();
         }
@@ -58,6 +62,7 @@ namespace SpaceJobs
         // Update is called once per frame
         void Update()
         {
+            //bulletMovement.Update();
             if (Input.GetKeyUp(KeyCode.H))
             {
                 // TODO set this as a timer asswell... 

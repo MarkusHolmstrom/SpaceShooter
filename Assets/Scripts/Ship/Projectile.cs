@@ -45,12 +45,16 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         //TODO figure otu why this is needed!!
         if (this.gameObject.activeInHierarchy && ship == null)
         {
             Destroy(this.gameObject);
         }
+        //MoveProjectile();
+    }
+
+    private void MoveProjectile()
+    {
         bulletTransform.Translate(bulletSpeed * Time.deltaTime * Vector3.up);
         if (aimable && lifeTime < aimTimer)
         {

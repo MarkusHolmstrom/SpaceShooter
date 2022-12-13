@@ -29,27 +29,30 @@ public class EnemyManager : MonoBehaviour
 
     public void SpawnEnemies(int quantity)
     {
-        if (currentIndex >= maxEnemies)
-        {
-            currentIndex = 0;
-        }
-        Debug.Log("hopp");
-        for (int i = 0; i < quantity && unusedEnemies.Count > i; i++)
+        //if (currentIndex >= maxEnemies)
+        //{
+        //    currentIndex = 0;
+        //}
+        //Debug.Log("hopp");
+        for (int i = 0; i < quantity; i++)
         {
             GameObject go = enemyObjectPool.GetPooledObject();
-            go.transform.position = GetEnemySpawnLocation(currentIndex);
-            go.SetActive(true);
+            if (go != null)
+            {
+                go.transform.position = GetEnemySpawnLocation();
+                go.SetActive(true);
+            }
             //unusedEnemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
             //unusedEnemies[i].SetActive(true);
             //activeEnemies.Add(unusedEnemies[i]);
             //unusedEnemies.Remove(unusedEnemies[i]);
         }
-        currentIndex += quantity;
+        //currentIndex += quantity;
 
     }
 
     int test = 0;
-    private Vector3 GetEnemySpawnLocation(int curIndex)
+    private Vector3 GetEnemySpawnLocation()
     {
         Vector3 spawnLocation = Vector3.zero;
         float randX = 40;

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -37,18 +39,23 @@ public class PlayerShip : MonoBehaviour
     [SerializeField]
     private int Health = 10;
 
+    [SerializeField]
+    private Movement movement;
+
     // Start is called before the first frame update
     void Start()
     {
+        
         shipTransform = transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateMovement();
+        //UpdateMovement();
         UpdateRotation();
         ShootCycle();
+        movement.Direction = new float3(transform.localRotation.x, transform.localRotation.y, 0f);
     }
 
     void UpdateMovement()
@@ -88,7 +95,7 @@ public class PlayerShip : MonoBehaviour
         mousePos.x -= objectPos.x;
         mousePos.y -= objectPos.y;
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        shipTransform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+        shipTransform.rotation = Quaternion.Euler(new Vector3(-angle, 0, 0));
     }
 
     void ShootCycle()
