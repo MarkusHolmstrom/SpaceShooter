@@ -48,9 +48,11 @@ public class Projectile : MonoBehaviour
         //TODO figure otu why this is needed!!
         if (this.gameObject.activeInHierarchy && ship == null)
         {
+            Debug.LogError("Error: unvalid projectile has spawned!!");
             Destroy(this.gameObject);
         }
         //MoveProjectile();
+        CheckIfOutOfBounds();
     }
 
     private void MoveProjectile()
@@ -63,7 +65,6 @@ public class Projectile : MonoBehaviour
             Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.forward) * ship.transform.rotation;
             bulletTransform.rotation = newRotation;
         }
-        CheckIfOutOfBounds();
     }
 
     private void CheckIfOutOfBounds()

@@ -50,16 +50,16 @@ public class PlayerShip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UpdateMovement();
+        UpdateMovement();
         UpdateRotation();
         ShootCycle();
     }
 
     void UpdateMovement()
     {
-        shipTransform.position += new Vector3(
-            moveSpeed *  -Input.GetAxis("Horizontal") * Time.deltaTime,
-            moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime, 0 );
+        shipTransform.position += new Vector3( 0 ,
+            moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime,
+            moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime);
 
         // Constrains
         if (shipTransform.position.x < -XMAX)

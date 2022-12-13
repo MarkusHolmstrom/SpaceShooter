@@ -31,21 +31,19 @@ public class EnemyShip : MonoBehaviour
     [SerializeField]
     private float shipSpeed = 3.0f;
 
-    // Screen zone as a target, struct instead?
-    [SerializeField]
-    private int xMax = 22;
     [SerializeField]
     private int yMax = 14;
-
-    private bool foundZone = false;
+    [SerializeField]
+    private int zMax = 22;
 
     [SerializeField]
-    private GameObject player;
+    private float speedFoundZone = 0.5f;
+    private bool foundZone = false;
 
     [SerializeField]
     private int Health = 4;
 
-    [SerializeField]
+    private GameObject player;
     private EnemyManager enemyManager;
     private GameObject gameManager;
 
@@ -63,34 +61,30 @@ public class EnemyShip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UpdateMovement();
+        foundZone = IsWithinScreenZone();
+        UpdateMovement();
         UpdateRotation();
         ShootCycle();
     }
 
     void UpdateMovement()
     {
-        foundZone = IsWithinScreenZone();
         if (foundZone)
         {
-            shipTransform.Translate(shipSpeed * 0.2f * Time.deltaTime * Vector3.forward);
+            shipTransform.Translate(speedFoundZone * Time.deltaTime * Vector3.forward);
+            //shipTransform.position += new Vector3(0, 0, speedFoundZone * Time.deltaTime);
+            //shipTransform.position += Vector3.forward * speedFoundZone * Time.deltaTime;
         }
         else
         {
             shipTransform.Translate(shipSpeed * Time.deltaTime * Vector3.forward);
+            //shipTransform.position += new Vector3(0, 0, shipSpeed * Time.deltaTime);
+            //shipTransform.position += Vector3.forward * shipSpeed * Time.deltaTime;
         }
     }
 
     private bool IsWithinScreenZone()
     {
-        if (shipTransform.position.x < -xMax)
-        {
-            return false;
-        }
-        else if (shipTransform.position.x > xMax)
-        {
-            return false;
-        }
         if (shipTransform.position.y < -yMax)
         {
             return false;
@@ -99,13 +93,20 @@ public class EnemyShip : MonoBehaviour
         {
             return false;
         }
+        if (shipTransform.position.z < -zMax)
+        {
+            return false;
+        }
+        else if (shipTransform.position.z > zMax)
+        {
+            return false;
+        }
         return true;
     }
 
     void UpdateRotation()
     {
-        shipTransform.LookAt(player.transform.position, Vector3.up);
-        
+        shipTransform.LookAt(player.transform.position, Vector3.forward);
     }
 
     void ShootCycle()

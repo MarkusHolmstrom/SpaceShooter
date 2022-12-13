@@ -55,22 +55,22 @@ public class EnemyManager : MonoBehaviour
     private Vector3 GetEnemySpawnLocation()
     {
         Vector3 spawnLocation = Vector3.zero;
-        float randX = 40;
         float randY = 30;
+        float randZ = 40;
         if (test == 0) //curIndex <= MAX_QUANTITY_ENEMIES / 2)
         {
-            randX = LCGRandomGenerator.RandomLCGfloat(20, 50);
             randY = LCGRandomGenerator.RandomLCGfloat(-40, 40);
+            randZ = LCGRandomGenerator.RandomLCGfloat(20, 50);
             test++;
         }
         else if (test == 1) //curIndex <= MAX_QUANTITY_ENEMIES)
         {
-            randX = LCGRandomGenerator.RandomLCGfloat(-40, 50);
             randY = LCGRandomGenerator.RandomLCGfloat(-20, -40);
+            randZ = LCGRandomGenerator.RandomLCGfloat(-40, 50);
             test = 0;
         }
-        spawnLocation.x = randX;
         spawnLocation.y = randY;
+        spawnLocation.z = randZ;
         return spawnLocation;
     }
     // TODO change to eventsystem or smthing

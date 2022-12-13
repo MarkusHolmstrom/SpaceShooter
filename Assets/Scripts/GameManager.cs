@@ -24,7 +24,8 @@ namespace SpaceJobs
         private int enemiesPerWave = 5;
         ObjectFactory objectFactory = new ObjectFactory();
         EnemyManager enemyManager;
-        ProjectileManager projManager;
+        [SerializeField]
+        private ProjectileManager projManager;
 
         // For lookForCollisionsJob 
         public NativeArray<CollisionObject> ShipObjects;
@@ -44,7 +45,6 @@ namespace SpaceJobs
         {
             bulletMovement = new BulletMovement();
             enemyManager = GetComponent<EnemyManager>();
-            projManager = GetComponent<ProjectileManager>();
         }
 
         private void Start()
@@ -69,8 +69,8 @@ namespace SpaceJobs
                 enemyManager.SpawnEnemies(enemiesPerWave);
             }
 
-            //SetupTransforms();
-            //SetPositions();
+            SetupTransforms();
+            SetPositions();
         }
 
         private void CreateEnemies(int quantity)
@@ -85,8 +85,8 @@ namespace SpaceJobs
         {
             int shipActive = enemyManager.activeEnemies.Count;
             int projActive = projManager.activeProjectiles.Count;
-            ShipObjects = new NativeArray<CollisionObject>(shipActive, Allocator.TempJob);
-            ProjectileObjects = new NativeArray<CollisionObject>(projActive, Allocator.TempJob);
+            ShipObjects = new NativeArray<CollisionObject>(shipActive, Allocator.Persistent);
+            ProjectileObjects = new NativeArray<CollisionObject>(projActive, Allocator.Persistent);
 
             //Debug.LogWarning(enemyManager.activeEnemies.Count);
             shipTransforms = new Transform[shipActive];
@@ -130,8 +130,8 @@ namespace SpaceJobs
                 //Debug.Log(Projectile.ObjectPosition + " " + Projectile.ID);
             }
 
-            ShipCollisionIDs = new NativeArray<int>(100, Allocator.TempJob);
-            ProjectileCollisionIDs = new NativeArray<int>(100, Allocator.TempJob);
+            ShipCollisionIDs = new NativeArray<int>(100, Allocator.Persistent);
+            ProjectileCollisionIDs = new NativeArray<int>(100, Allocator.Persistent);
             bool coll = false;
             LookForCollisionsJob collisionsJob = new LookForCollisionsJob
             {
@@ -170,12 +170,12 @@ namespace SpaceJobs
                     projIDCount++;
                 }
             }
-            Debug.Log("efter: " + collisionsJob.test + " " + collisionsJob.shiptest);
+            //Debug.Log("efter: " + collisionsJob.test + " " + collisionsJob.shiptest);
             if (coll)
             {
                 Debug.Log("efter: " + shipIDCount + " " + projIDCount);
             }
-            if (collisionsJob.Collision)
+            //if (collisionsJob.Collision)
             {
                 Debug.Log(collisionsJob.ProjectileCollisionIDs.Length);
                 foreach (int ID in collisionsJob.ProjectileCollisionIDs)

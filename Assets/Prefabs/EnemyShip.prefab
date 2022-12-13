@@ -194,7 +194,6 @@ GameObject:
   - component: {fileID: 4888813424756318819}
   - component: {fileID: 8492253583911144173}
   - component: {fileID: 6905366903413950157}
-  - component: {fileID: 7501998577908520121}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: AIShip
@@ -237,7 +236,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 104
+  m_Constraints: 98
   m_CollisionDetection: 0
 --- !u!136 &6577352827233024252
 CapsuleCollider:
@@ -286,9 +285,8 @@ MonoBehaviour:
   shipSpeed: 3
   xMax: 22
   yMax: 14
-  player: {fileID: 0}
+  speedFoundZone: 0.5
   Health: 4
-  enemyManager: {fileID: 0}
 --- !u!114 &6905366903413950157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,19 +299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17fcebd79f5e61944808baf1e83adc30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7501998577908520121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4312742207519668723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de10982581bc93a4199d135c1a7205cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MovementSpeed: 2
 --- !u!1 &5954072824902793187
 GameObject:
   m_ObjectHideFlags: 0
