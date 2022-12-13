@@ -39,8 +39,6 @@ public class PlayerShip : MonoBehaviour
     [SerializeField]
     private int Health = 10;
 
-    [SerializeField]
-    private Movement movement;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +53,6 @@ public class PlayerShip : MonoBehaviour
         //UpdateMovement();
         UpdateRotation();
         ShootCycle();
-        movement.Direction = new float3(transform.localRotation.x, transform.localRotation.y, 0f);
     }
 
     void UpdateMovement()
