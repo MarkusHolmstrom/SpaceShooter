@@ -93,12 +93,17 @@ public class ProjectileManager : MonoBehaviour
     {
         if (enemy)
         {
-            return enemyObjectPool.GetPooledObject();
+            GameObject go = enemyObjectPool.GetPooledObject();
+            if (go != null) { activeProjectiles.Add(go); }
+                
+            return go;
             //return GetNewProjectile(enemy, enemyProjectiles);
         }
         else
         {
-            return objectPool.GetPooledObject();
+            GameObject go = objectPool.GetPooledObject();
+            if (go != null) { activeProjectiles.Add(go); }
+            return go;
             //return GetNewProjectile(enemy, projectiles);
         }
     }
@@ -127,6 +132,12 @@ public class ProjectileManager : MonoBehaviour
         }
         Debug.Log("five minutes more...");
         return null;
+    }
+
+    public void DeActivateProjectile(GameObject proj)
+    {
+        activeProjectiles.Remove(proj);
+        proj.SetActive(false);
     }
 
     public void DeActivateProjectile(bool enemy, TypeProjectile proj)

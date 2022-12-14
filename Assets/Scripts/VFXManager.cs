@@ -76,8 +76,8 @@ public class VFXManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpawnPrefabs(objectPool, 100, shipExplPrefab);
-        SpawnPrefabs(projObjectPool, 100, projExplPrefab);
+        SpawnPrefabs(objectPool, quantity, shipExplPrefab);
+        SpawnPrefabs(projObjectPool, quantity, projExplPrefab);
     }
 
     // Update is called once per frame

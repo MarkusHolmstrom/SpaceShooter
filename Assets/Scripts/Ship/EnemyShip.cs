@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UIElements;
 
-public class EnemyShip : MonoBehaviour
+public class EnemyShip : MonoBehaviour, IShip
 {
     [SerializeField]
     private LaserBlaster laserBlaster;
@@ -52,7 +52,6 @@ public class EnemyShip : MonoBehaviour
     {
         shipTransform = transform;
         player = GameObject.FindGameObjectWithTag("Player");
-        // =?
         reloadTime = LCGRandomGenerator.RandomLCGfloat(-2.0f, RELOAD_TIMER);
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
         enemyManager = gameManager.GetComponent<EnemyManager>();
@@ -67,7 +66,7 @@ public class EnemyShip : MonoBehaviour
         ShootCycle();
     }
 
-    void UpdateMovement()
+    public void UpdateMovement()
     {
         if (foundZone)
         {
@@ -104,12 +103,12 @@ public class EnemyShip : MonoBehaviour
         return true;
     }
 
-    void UpdateRotation()
+    public void UpdateRotation()
     {
         shipTransform.LookAt(player.transform.position, Vector3.forward);
     }
 
-    void ShootCycle()
+    public void ShootCycle()
     {
         if (!foundZone)
         {
@@ -140,7 +139,7 @@ public class EnemyShip : MonoBehaviour
         }
     }
 
-    private void OnDeath()
+    public void OnDeath()
     {
         GameObject expl = VFXManager.SharedInstance.ActivateExplosion(false);
         expl.transform.position = shipTransform.position;

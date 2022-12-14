@@ -41,6 +41,7 @@ public class EnemyManager : MonoBehaviour
             {
                 go.transform.position = GetEnemySpawnLocation();
                 go.SetActive(true);
+                activeEnemies.Add(go);
             }
             //unusedEnemies[i].transform.position = GetEnemySpawnLocation(currentIndex);
             //unusedEnemies[i].SetActive(true);

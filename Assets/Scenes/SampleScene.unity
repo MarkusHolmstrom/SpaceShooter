@@ -493,6 +493,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFXManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2652264275594766637, guid: cd5d008707bd46c47964904017a3e401, type: 3}
+      propertyPath: quantity
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2652264275594766639, guid: cd5d008707bd46c47964904017a3e401, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -598,6 +602,14 @@ PrefabInstance:
       propertyPath: projManager
       value: 
       objectReference: {fileID: 385473647}
+    - target: {fileID: 9103954441565645697, guid: 980685dd1047e144a95c9e17e9221e31, type: 3}
+      propertyPath: searchOffset
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9103954441565645697, guid: 980685dd1047e144a95c9e17e9221e31, type: 3}
+      propertyPath: MinDistanceForHit
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 980685dd1047e144a95c9e17e9221e31, type: 3}
 --- !u!1001 &8285456512314593293
@@ -650,6 +662,10 @@ PrefabInstance:
     - target: {fileID: 8285456513110468248, guid: fdcec06cb9e100146a8a7317451e6c89, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8285456513110468249, guid: fdcec06cb9e100146a8a7317451e6c89, type: 3}
+      propertyPath: projectileQuantity
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8285456513110468254, guid: fdcec06cb9e100146a8a7317451e6c89, type: 3}
       propertyPath: m_Name

@@ -39,7 +39,6 @@ public class Projectile : MonoBehaviour
         bulletTransform = transform;
         GameObject projManagerGO = GameObject.FindGameObjectWithTag("ProjectileManager");
         projManager = projManagerGO.GetComponent<ProjectileManager>();
-
     }
 
     // Update is called once per frame
@@ -74,7 +73,8 @@ public class Projectile : MonoBehaviour
         {
             if (projManager != null)
             {
-                projManager.DeActivateProjectile(enemy, projectile);
+                projManager.DeActivateProjectile(gameObject);
+                //projManager.DeActivateProjectile(enemy, projectile);
             }
             else
             {
@@ -86,19 +86,19 @@ public class Projectile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
-            ps.DoDamage(damage);
-        }
-        else if (collision.gameObject.tag == "AIShip")
-        {
-            EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
-            ps.DoDamage(damage);
-        }
-        ContactPoint contact = collision.contacts[0];
-        Vector3 position = contact.point;
-        OnCollision(position);
+        //if (collision.gameObject.CompareTag("Player"))
+        //{
+        //    PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
+        //    ps.DoDamage(damage);
+        //}
+        //else if (collision.gameObject.tag == "AIShip")
+        //{
+        //    EnemyShip ps = collision.gameObject.GetComponent<EnemyShip>();
+        //    ps.DoDamage(damage);
+        //}
+        //ContactPoint contact = collision.contacts[0];
+        //Vector3 position = contact.point;
+        //OnCollision(position);
     }
 
     private void OnCollision(Vector3 position)
@@ -114,7 +114,8 @@ public class Projectile : MonoBehaviour
         }
         if (projManager != null)
         {
-            projManager.DeActivateProjectile(enemy, projectile);
+            projManager.DeActivateProjectile(gameObject);
+            //projManager.DeActivateProjectile(enemy, projectile);
         }
         else
         {

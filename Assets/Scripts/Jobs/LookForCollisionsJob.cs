@@ -23,44 +23,29 @@ namespace SpaceJobs
     [BurstCompile]
     public struct LookForCollisionsJob : IJob
     {
-        [ReadOnly] public NativeArray<CollisionObject> Ships;
-        [ReadOnly] public NativeArray<CollisionObject> Projectiles;
+        [ReadOnly] public NativeArray<float3> ShipLocations;
+        [ReadOnly] public NativeArray<float3> ProjectileLocations;
         public int MinDistanceForHit;
-        public bool Collision;
-        // returns lists of ID for objects if Collision is true
 
-        public NativeArray<int> ShipCollisionIDs;
-        public NativeArray<int> ProjectileCollisionIDs;
+        public NativeArray<float3> ShipCollisions;
+        public NativeArray<float3> ProjectileCollisions;
 
-        public int test;
-        public int shiptest;
-        private int shipIDCount;
-        private int projIDCount;
 
         // Execute() is called when the job runs.
         public void Execute()
         {
-            int shipIDCount = 0;
-            int projIDCount = 0;
-        test = 0;
-            shiptest = 0;
             // Compute the square distance from each seeker to every target.
-            for (int i = 0; i < Projectiles.Length; i++)
+            for (int i = 0; i < ProjectileLocations.Length; i++)
             {
-                test++;
-                float3 projPos = Projectiles[i].ObjectPosition;
-                for (int j = 0; j < Ships.Length; j++)
+                float3 projPos = ProjectileLocations[i];
+                for (int j = 0; j < ShipLocations.Length; j++)
                 {
-                    shiptest++;
-                    float3 targetPos = Ships[j].ObjectPosition;
+                    float3 targetPos = ShipLocations[j];
                     float distSq = math.distancesq(projPos, targetPos);
                     if (distSq < MinDistanceForHit)
                     {
-                        Collision = true;
-                        projIDCount++;
-                        ProjectileCollisionIDs[projIDCount] = Projectiles[i].ID;
-                        shipIDCount++;
-                        ShipCollisionIDs[shipIDCount] = Ships[j].ID;
+                        ProjectileCollisions[i] = ProjectileLocations[i];
+                        ShipCollisions[j] = ShipLocations[j];
                     }
                 }
             }

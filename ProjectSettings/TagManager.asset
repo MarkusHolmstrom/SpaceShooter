@@ -9,6 +9,7 @@ TagManager:
   - AIBullet
   - GameManager
   - ProjectileManager
+  - Projectile
   layers:
   - Default
   - TransparentFX

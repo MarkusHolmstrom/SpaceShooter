@@ -8,7 +8,7 @@ using static UnityEngine.GraphicsBuffer;
 
 // https://www.youtube.com/watch?v=YxlY4_aj678 tut
 
-public class PlayerShip : MonoBehaviour
+public class PlayerShip : MonoBehaviour, IShip
 {
     [SerializeField]
     private LaserBlaster laserBlaster;
@@ -39,7 +39,6 @@ public class PlayerShip : MonoBehaviour
     [SerializeField]
     private int Health = 10;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +54,7 @@ public class PlayerShip : MonoBehaviour
         ShootCycle();
     }
 
-    void UpdateMovement()
+    public void UpdateMovement()
     {
         shipTransform.position += new Vector3( 0 ,
             moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime,
@@ -85,7 +84,7 @@ public class PlayerShip : MonoBehaviour
 
     }
 
-    void UpdateRotation()
+    public void UpdateRotation()
     {
         mousePos = Input.mousePosition;
         objectPos = Camera.main.WorldToScreenPoint(shipTransform.position);
@@ -95,7 +94,7 @@ public class PlayerShip : MonoBehaviour
         shipTransform.rotation = Quaternion.Euler(new Vector3(-angle, 0, 0));
     }
 
-    void ShootCycle()
+    public void ShootCycle()
     {
         if (!reloading && Input.GetKey(KeyCode.Mouse0) && laserBlaster)
         {
@@ -119,8 +118,14 @@ public class PlayerShip : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
-            //Debug.Log("Player dead! NOOOOO stop playing! youre dead, you here me? STop!!! STOP this MADNESS now GOD Dammit!!!");
+            OnDeath();
+            
         }
     }
-    
+
+    public void OnDeath()
+    {
+        //Debug.Log("Player dead! NOOOOO stop playing! youre dead, you here me? STop!!! STOP this MADNESS now GOD Dammit!!!");
+    }
+
 }

@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 76336563538720948}
   - component: {fileID: 3974672082699793767}
   - component: {fileID: 2940889121859687229}
-  - component: {fileID: 3575242912953698629}
   - component: {fileID: 279367751449504175}
+  - component: {fileID: 1492025689447711088}
   m_Layer: 0
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,19 +87,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17fcebd79f5e61944808baf1e83adc30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3575242912953698629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3615353736177453648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 1
 --- !u!114 &279367751449504175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +99,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de10982581bc93a4199d135c1a7205cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 5
+  MovementSpeed: 7
+--- !u!114 &1492025689447711088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3615353736177453648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 1
 --- !u!1 &6000649220006691798
 GameObject:
   m_ObjectHideFlags: 0

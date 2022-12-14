@@ -5,22 +5,22 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-public class TransformConverter : MonoBehaviour //, IConvertGameObjectToEntity
+public class TransformConverter : MonoBehaviour
 {
     private Entity entityPrefab;
     private World defaultWorld;
     private EntityManager entityManager;
 
-    void Start()
+    void Awake()
     {
-        defaultWorld = World.DefaultGameObjectInjectionWorld;
-        entityManager = defaultWorld.EntityManager;
+        //defaultWorld = World.DefaultGameObjectInjectionWorld;
+        //entityManager = defaultWorld.EntityManager;
 
-        GameObjectConversionSettings settings = 
-            GameObjectConversionSettings.FromWorld(defaultWorld, null);
-        entityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(
-            gameObject, settings);
-        InstantiateEntity(float3.zero);
+        //GameObjectConversionSettings settings = 
+        //    GameObjectConversionSettings.FromWorld(defaultWorld, null);
+        //entityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(
+        //    gameObject, settings);
+        //InstantiateEntity(transform.position);
     }
     private void InstantiateEntity(float3 position)
     {
@@ -35,14 +35,4 @@ public class TransformConverter : MonoBehaviour //, IConvertGameObjectToEntity
             Value = position
         });
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    //public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-    //{
-    //    dstManager.AddComponentObject(entity, GetComponent<Transform>());
-    //}
 }
