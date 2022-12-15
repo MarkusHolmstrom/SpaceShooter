@@ -1,19 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
-using Unity.Jobs;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
-using Unity.Burst;
-//using Unity.Entities;
-using UnityEngine.Jobs;
-using Unity.Mathematics;
-
-// https://docs.unity3d.com/ScriptReference/Unity.Jobs.IJob.html
-// An example job which increments all the numbers of an array.
-
-// another example with float3s:
-// https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/DOTS_Guide/jobs_tutorial/README.md
 
 [RequireComponent(typeof(ObjectPool))]
 public class VFXManager : MonoBehaviour
@@ -43,7 +31,6 @@ public class VFXManager : MonoBehaviour
         SpawnPrefabs(objectPool, quantity, shipExplPrefab);
         SpawnPrefabs(projObjectPool, quantity, projExplPrefab);
     }
-
 
     private void SpawnPrefabs(ObjectPool op, int quantity, GameObject explosionPrefab)
     {

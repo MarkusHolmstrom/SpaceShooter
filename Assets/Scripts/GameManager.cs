@@ -1,16 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Factory;
 using Unity.Collections;
 using Unity.Mathematics;
-using static UnityEngine.GraphicsBuffer;
 using Unity.Jobs;
-using System.Linq;
-using Unity.VisualScripting;
-using Unity.Entities.UniversalDelegates;
-using Unity.Burst.CompilerServices;
-using UnityEngine.UI;
 using TMPro;
 
 namespace SpaceJobs
@@ -27,8 +19,8 @@ namespace SpaceJobs
         private List<GameObject> enemies = new List<GameObject>();
         [SerializeField]
         private int enemiesPerWave = 5;
-        ObjectFactory objectFactory = new ObjectFactory();
-        EnemyManager enemyManager;
+
+        private EnemyManager enemyManager;
         [SerializeField]
         private ProjectileManager projManager;
 
@@ -62,14 +54,22 @@ namespace SpaceJobs
         private void Start()
         {
             enemies = enemyManager.CreateEnemyPool(MaxQuantityEnemies, enemyPrefab);
-            CreateEnemies(MaxQuantityEnemies);
-            enemyManager.SpawnEnemies(enemiesPerWave);
+            SpawnEnemies();
         }
 
         // Update is called once per frame
         void Update()
         {
-            //bulletMovement.Update();
+            SpawnLoop();
+            // These two functions handle the look for collision jobs
+            SetupTransforms();
+            SetPositions();
+        }
+
+        private void SpawnLoop()
+        {
+            // Spamming this button may cause an index out of range exception for some
+            // reason, how fun it is with weird bugs the day before deadline, I am right?
             if (Input.GetKeyUp(KeyCode.H))
             {
                 SpawnEnemies();
@@ -83,9 +83,6 @@ namespace SpaceJobs
                 SpawnEnemies();
                 currentTime = 0f;
             }
-
-            SetupTransforms();
-            SetPositions();
         }
 
         private void SpawnEnemies()
@@ -98,14 +95,6 @@ namespace SpaceJobs
         public void OnDestroy()
         {
             CleanUp();
-        }
-
-        private void CreateEnemies(int quantity)
-        {
-            for (int i = 0; i < quantity; i++)
-            {
-                objectFactory.CreateItem(IGameFactory.Item.Enemy, enemies[i]);
-            }
         }
 
         private void SetupTransforms()
@@ -170,6 +159,8 @@ namespace SpaceJobs
 
         private void IterateCollisionArrays()
         {
+            // I wish I could find a better solution to deal with collision,
+            // this is the best I could do for now
             for (int i = 0; i < ProjectileCollisions.Length; i++)
             {
                 for (int j = 0; j < ShipCollisions.Length; j++)

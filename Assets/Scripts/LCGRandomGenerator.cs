@@ -1,12 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
+
+// An adapted LCG PRNG system I have created for a C++/Unreal project earlier
+// Had some problems with the seed, used this to improve performance
 
 public static class LCGRandomGenerator 
 {
     private static int seed = 5725;
+    // just some random high numbers for these guys
     private static readonly int a = 1664525;
     private static readonly int c = 10139042;
     private static readonly int m = 1415461035;

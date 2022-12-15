@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.EventSystems.EventTrigger;
 
-public class TransformConverter : MonoBehaviour//, IConvertGameObjectToEntity
+public class TransformConverter : MonoBehaviour
 {
     private Entity entityPrefab;
     private World defaultWorld;
@@ -24,7 +19,6 @@ public class TransformConverter : MonoBehaviour//, IConvertGameObjectToEntity
             GameObjectConversionSettings.FromWorld(defaultWorld, null);
         entityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(
             gameObject, settings);
-        //InstantiateEntity(transform.position);
     }
     public void InstantiateEntity(float3 position)
     {
@@ -46,8 +40,4 @@ public class TransformConverter : MonoBehaviour//, IConvertGameObjectToEntity
         entityManager.DestroyEntity(myEntity);
     }
 
-    //public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-    //{
-    //    dstManager.AddComponentObject(entity, GetComponent<Transform>());
-    //}
 }

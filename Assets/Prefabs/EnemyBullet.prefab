@@ -149,14 +149,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ship: {fileID: 0}
   explosionPrefab: {fileID: 5716202492813624842, guid: 52f2bd38811bfc5408b95a8a15ef4bd1, type: 3}
-  aimable: 0
   enemy: 0
   projManager: {fileID: 0}
-  aimTimer: 0.1
-  bulletSpeed: 8
-  damage: 1
-  xMax: 30
-  yMax: 20
+  xMax: 50
+  yMax: 30
 --- !u!54 &7158252114263360775
 Rigidbody:
   m_ObjectHideFlags: 0

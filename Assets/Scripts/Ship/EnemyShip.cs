@@ -1,10 +1,4 @@
-using Factory;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.UIElements;
 
 public class EnemyShip : MonoBehaviour, IShip
 {
@@ -52,7 +46,6 @@ public class EnemyShip : MonoBehaviour, IShip
     {
         shipTransform = transform;
         player = GameObject.FindGameObjectWithTag("Player");
-        reloadTime = LCGRandomGenerator.RandomLCGfloat(-2.0f, RELOAD_TIMER);
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
         enemyManager = gameManager.GetComponent<EnemyManager>();
     }
@@ -71,14 +64,10 @@ public class EnemyShip : MonoBehaviour, IShip
         if (foundZone)
         {
             shipTransform.Translate(speedFoundZone * Time.deltaTime * Vector3.forward);
-            //shipTransform.position += new Vector3(0, 0, speedFoundZone * Time.deltaTime);
-            //shipTransform.position += Vector3.forward * speedFoundZone * Time.deltaTime;
         }
         else
         {
             shipTransform.Translate(shipSpeed * Time.deltaTime * Vector3.forward);
-            //shipTransform.position += new Vector3(0, 0, shipSpeed * Time.deltaTime);
-            //shipTransform.position += Vector3.forward * shipSpeed * Time.deltaTime;
         }
     }
 

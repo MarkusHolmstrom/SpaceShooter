@@ -1,6 +1,3 @@
-using Factory;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserBlaster : MonoBehaviour
@@ -32,12 +29,9 @@ public class LaserBlaster : MonoBehaviour
         bullet.GetComponent<TransformConverter>().InstantiateEntity(muzzlePosition);
         bullet.transform.SetPositionAndRotation(muzzlePosition, newRotation);
 
-        //GameObject bullet = Instantiate(projManager.GetPrefab(enemy), muzzlePosition, newRotation);
-        
         bullet.SetActive(true);
         Projectile proj = bullet.GetComponent<Projectile>();
         proj.ship = ship;
-        proj.aimable = true;
         proj.enemy = enemy;
     }
 }

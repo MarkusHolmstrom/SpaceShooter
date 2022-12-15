@@ -1,8 +1,5 @@
-
 using TMPro;
 using UnityEngine;
-
-// https://www.youtube.com/watch?v=YxlY4_aj678 tut
 
 public class PlayerShip : MonoBehaviour, IShip
 {
@@ -108,7 +105,6 @@ public class PlayerShip : MonoBehaviour, IShip
         else if (reloading)
         {
             reloading = false;
-            //Debug.Log("Done reloading, captain!");
         }
     }
 
@@ -118,7 +114,6 @@ public class PlayerShip : MonoBehaviour, IShip
         if (Health <= 0)
         {
             OnDeath();
-            
         }
     }
 
