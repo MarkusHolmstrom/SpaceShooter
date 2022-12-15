@@ -48,22 +48,9 @@ public class Projectile : MonoBehaviour
         if (this.gameObject.activeInHierarchy && ship == null)
         {
             Debug.LogError("Error: unvalid projectile has spawned!!");
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
-        //MoveProjectile();
         CheckIfOutOfBounds();
-    }
-
-    private void MoveProjectile()
-    {
-        bulletTransform.Translate(bulletSpeed * Time.deltaTime * Vector3.up);
-        if (aimable && lifeTime < aimTimer)
-        {
-            lifeTime += Time.deltaTime;
-            // offset needed here aswell
-            Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.forward) * ship.transform.rotation;
-            bulletTransform.rotation = newRotation;
-        }
     }
 
     private void CheckIfOutOfBounds()
@@ -71,21 +58,26 @@ public class Projectile : MonoBehaviour
         if (bulletTransform.position.x >= xMax || bulletTransform.position.y >= yMax ||
             bulletTransform.position.x <= -xMax || bulletTransform.position.y <= -yMax)
         {
-            if (projManager != null)
-            {
-                projManager.DeActivateProjectile(gameObject);
-                //projManager.DeActivateProjectile(enemy, projectile);
-            }
-            else
-            {
-                Debug.LogError("Error: couldnt find projectile manaager in this bullet!!");
-            }
-            gameObject.SetActive(false);
+            Remove();
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void RemoveAtCollision()
     {
+        GameObject expl = VFXManager.SharedInstance.ActivateExplosion(true);
+        expl.transform.position = bulletTransform.position;
+        Remove();
+    }
+
+    private void Remove()
+    {
+        GetComponent<TransformConverter>().RemoveEntities();
+        gameObject.SetActive(false);
+        projManager.DeActivateProjectile(gameObject);
+    }
+
+    //void OnCollisionEnter(Collision collision)
+    //{
         //if (collision.gameObject.CompareTag("Player"))
         //{
         //    PlayerShip ps = collision.gameObject.GetComponent<PlayerShip>();
@@ -99,27 +91,6 @@ public class Projectile : MonoBehaviour
         //ContactPoint contact = collision.contacts[0];
         //Vector3 position = contact.point;
         //OnCollision(position);
-    }
+    //}
 
-    private void OnCollision(Vector3 position)
-    {
-        GameObject expl = VFXManager.SharedInstance.ActivateExplosion(true);
-        expl.transform.position = position;
-        //Instantiate(explosionPrefab, position, Quaternion.identity);
-        if (projectile == null)
-        {
-            gameObject.SetActive(false);
-            //TODO this is a temp thing, needs to call deactiveprojctiels aswell
-            return;
-        }
-        if (projManager != null)
-        {
-            projManager.DeActivateProjectile(gameObject);
-            //projManager.DeActivateProjectile(enemy, projectile);
-        }
-        else
-        {
-            Debug.LogError("Error: couldnt find projectile manaager in this bullet!!");
-        }
-    }
 }

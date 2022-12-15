@@ -61,13 +61,13 @@ public class EnemyManager : MonoBehaviour
         if (test == 0) //curIndex <= MAX_QUANTITY_ENEMIES / 2)
         {
             randY = LCGRandomGenerator.RandomLCGfloat(-40, 40);
-            randZ = LCGRandomGenerator.RandomLCGfloat(20, 50);
+            randZ = LCGRandomGenerator.RandomLCGfloat(20, 100);
             test++;
         }
         else if (test == 1) //curIndex <= MAX_QUANTITY_ENEMIES)
         {
             randY = LCGRandomGenerator.RandomLCGfloat(-20, -40);
-            randZ = LCGRandomGenerator.RandomLCGfloat(-40, 50);
+            randZ = LCGRandomGenerator.RandomLCGfloat(0, 50);
             test = 0;
         }
         spawnLocation.y = randY;

@@ -15,42 +15,6 @@ using Unity.Mathematics;
 // another example with float3s:
 // https://github.com/Unity-Technologies/EntityComponentSystemSamples/blob/master/DOTS_Guide/jobs_tutorial/README.md
 
-public struct IncrementJob : IJob
-{
-    [ReadOnly] public NativeArray<float3> TargetPositions;
-    [ReadOnly] public NativeArray<float3> SeekerPositions;
-    public NativeArray<float3> NearestTargetPositions;
-    
-    // Execute() is called when the job runs.
-    public void Execute()
-    {
-        
-    }
-}
-
-// A system that schedules the IJob.
-//[BurstCompile]
-//public partial struct MySystem : ISystem
-//{
-//    [BurstCompile]
-//    public void OnCreate(ref SystemState state) { }
-
-//    [BurstCompile]
-//    public void OnDestroy(ref SystemState state) { }
-
-//    [BurstCompile]
-//    public void OnUpdate(ref SystemState state)
-//    {
-//        var job = new IncrementJob
-//        {
-//            Nums = new NativeArray<float>(1000, state.WorldUpdateAllocator),
-//            Increment = 5f
-//        };
-
-//        JobHandle handle = job.Schedule();
-//        handle.Complete();
-//    }
-//}
 [RequireComponent(typeof(ObjectPool))]
 public class VFXManager : MonoBehaviour
 {
@@ -80,11 +44,6 @@ public class VFXManager : MonoBehaviour
         SpawnPrefabs(projObjectPool, quantity, projExplPrefab);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void SpawnPrefabs(ObjectPool op, int quantity, GameObject explosionPrefab)
     {

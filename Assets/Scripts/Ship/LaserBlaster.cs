@@ -25,8 +25,11 @@ public class LaserBlaster : MonoBehaviour
         GameObject bullet = projManager.GetPrefab(enemy);
         if (bullet == null)
         {
+            Debug.LogError("Error: ship cant find new bullet: " + transform.parent.gameObject.name);
             return;
         }
+        // some necessary values for the bullets
+        bullet.GetComponent<TransformConverter>().InstantiateEntity(muzzlePosition);
         bullet.transform.SetPositionAndRotation(muzzlePosition, newRotation);
 
         //GameObject bullet = Instantiate(projManager.GetPrefab(enemy), muzzlePosition, newRotation);

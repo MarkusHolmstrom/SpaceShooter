@@ -10,13 +10,16 @@ using System.Linq;
 using Unity.VisualScripting;
 using Unity.Entities.UniversalDelegates;
 using Unity.Burst.CompilerServices;
+using UnityEngine.UI;
+using TMPro;
 
 namespace SpaceJobs
 {
     [RequireComponent(typeof(EnemyManager))]
     public class GameManager : MonoBehaviour
     {
-        private const int MAX_QUANTITY_ENEMIES = 50;
+        [SerializeField]
+        private int MaxQuantityEnemies = 100;
 
         [SerializeField]
         private GameObject enemyPrefab;
@@ -32,25 +35,34 @@ namespace SpaceJobs
         // For lookForCollisionsJob 
         public NativeArray<float3> ShipObjects;
         public NativeArray<float3> ProjectileObjects;
+        [Header("Set how sensitive the jobsystem is locating nearby collisions")]
         public int MinDistanceForHit = 5;
-        public NativeArray<float3> ShipCollisionIDs;
-        public NativeArray<float3> ProjectileCollisionIDs;
+        public NativeArray<float3> ShipCollisions;
+        public NativeArray<float3> ProjectileCollisions;
 
         public static Transform[] shipTransforms;
         public static Transform[] projectileTransforms;
+
+        private Transform playerTransform;
+        // enemy wave variables
         [SerializeField]
-        private float searchOffset = 6f;
+        private TMP_Text waveText;
+        [SerializeField]
+        private float timerWave = 10f;
+        private float currentTime = 0f;
+        private int waveIndex = 0;
 
         // Start is called before the first frame update
         void Awake()
         {
             enemyManager = GetComponent<EnemyManager>();
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
         private void Start()
         {
-            enemies = enemyManager.CreateEnemyPool(MAX_QUANTITY_ENEMIES, enemyPrefab);
-            CreateEnemies(MAX_QUANTITY_ENEMIES);
+            enemies = enemyManager.CreateEnemyPool(MaxQuantityEnemies, enemyPrefab);
+            CreateEnemies(MaxQuantityEnemies);
             enemyManager.SpawnEnemies(enemiesPerWave);
         }
 
@@ -60,12 +72,27 @@ namespace SpaceJobs
             //bulletMovement.Update();
             if (Input.GetKeyUp(KeyCode.H))
             {
-                // TODO set this as a timer asswell... 
-                enemyManager.SpawnEnemies(enemiesPerWave);
+                SpawnEnemies();
+            }
+            else if (currentTime < timerWave)
+            {
+                currentTime += Time.deltaTime;
+            }
+            else if (currentTime >= timerWave)
+            {
+                SpawnEnemies();
+                currentTime = 0f;
             }
 
             SetupTransforms();
             SetPositions();
+        }
+
+        private void SpawnEnemies()
+        {
+            enemyManager.SpawnEnemies(enemiesPerWave);
+            waveIndex++;
+            waveText.text = "Current Wave: " + waveIndex;
         }
 
         public void OnDestroy()
@@ -83,22 +110,22 @@ namespace SpaceJobs
 
         private void SetupTransforms()
         {
-            int shipActive = enemyManager.activeEnemies.Count;
+            // add one for the player ship
+            int shipActive = enemyManager.activeEnemies.Count + 1;
             int projActive = projManager.activeProjectiles.Count;
             ShipObjects = new NativeArray<float3>(shipActive, Allocator.TempJob);
             ProjectileObjects = new NativeArray<float3>(projActive, Allocator.TempJob);
 
-            //Debug.LogWarning(enemyManager.activeEnemies.Count);
             shipTransforms = new Transform[shipActive];
-            for (int i = 0; i < shipActive; i++)
+            for (int i = 0; i < shipActive - 1; i++)
             {
                 GameObject go = enemyManager.activeEnemies[i];
                 shipTransforms[i] = go.transform;
             }
+            // manually add the player transform
+            shipTransforms[shipActive - 1] = playerTransform;
 
             projectileTransforms = new Transform[projActive];
-            //GameObject[] = GameObject.FindGameObjectsWithTag("Projectile");
-            //Debug.Log(projManager.activeProjectiles.Count);
             for (int i = 0; i < projActive; i++)
             {
                 GameObject go = projManager.activeProjectiles[i];
@@ -108,113 +135,92 @@ namespace SpaceJobs
 
         private void SetPositions()
         {
-            //if (true)
-            //{
-            //    return;
-            //}
-            //Debug.Log("nu kor vi igen...");
             for (int i = 0; i < ShipObjects.Length; i++)
             {
-
                 ShipObjects[i] = shipTransforms[i].localPosition;
-                //Debug.Log(ShipObjects[i]);
             }
 
             for (int i = 0; i < ProjectileObjects.Length; i++)
             {
-                
                 ProjectileObjects[i] = projectileTransforms[i].localPosition;
-                //Debug.LogWarning(ProjectileObjects[i]);
             }
 
-            ShipCollisionIDs = new NativeArray<float3>(MAX_QUANTITY_ENEMIES, Allocator.TempJob);
-            ProjectileCollisionIDs = new NativeArray<float3>(MAX_QUANTITY_ENEMIES, Allocator.TempJob);
+            ShipCollisions = new NativeArray<float3>(MaxQuantityEnemies, Allocator.TempJob);
+            ProjectileCollisions = new NativeArray<float3>(MaxQuantityEnemies, Allocator.TempJob);
             
             LookForCollisionsJob collisionsJob = new LookForCollisionsJob
             {
                 ShipLocations = ShipObjects,
                 ProjectileLocations = ProjectileObjects,
                 MinDistanceForHit = this.MinDistanceForHit,
-                ShipCollisions = this.ShipCollisionIDs,
-                ProjectileCollisions = this.ProjectileCollisionIDs,
+                ShipCollisions = this.ShipCollisions,
+                ProjectileCollisions = this.ProjectileCollisions,
             };
-            //Debug.Log(collisionsJob.Ships.Length + " " + collisionsJob.Projectiles.Length
-            //    + " " + collisionsJob.MinDistanceForHit + " " + collisionsJob.ShipCollisionIDs.Length
-            //    + " " + collisionsJob.ProjectileCollisionIDs.Length);
 
-            // Schedule() puts the job instance on the job queue.
+            //  put the job instance on the job queue.
             JobHandle findHandle = collisionsJob.Schedule();
             
-            // The Complete method will not return until the job represented by 
-            // the handle finishes execution. Effectively, the main thread waits
-            // here until the job is done.
+            // Wait for job to be done
             findHandle.Complete();
-
-            for (int i = 0; i < collisionsJob.ProjectileCollisions.Length; i++)
-            {
-                float distance = Vector3.Distance(collisionsJob.ProjectileCollisions[i],
-                    collisionsJob.ShipCollisions[i]);
-                //float distanceTwo = Vector3.Distance(projectileTransforms[i].position,
-                //    shipTransforms[i].position);
-                if (distance > 0)
-                {
-                    RaycastHit hit;
-                    Vector3 start = collisionsJob.ProjectileCollisions[i];
-                    float length = MinDistanceForHit + searchOffset;
-                    if (Physics.SphereCast(start, length, transform.forward, out hit, length))
-                    {
-                        GameObject go = hit.rigidbody.gameObject;
-                        if (go.GetComponent<IShip>() != null)
-                        {
-                            Debug.Log(go.name);
-                            go.SetActive(false);
-
-                        }
-                    }
-                    // jadu-....
-                    start = collisionsJob.ShipCollisions[i];
-                    if (Physics.SphereCast(start, length, transform.forward, out hit, length))
-                    {
-                        GameObject go = hit.rigidbody.gameObject;
-                        if (go.GetComponent<Projectile>() != null)
-                        {
-                            Debug.LogWarning(go.name);
-                            go.SetActive(false);
-
-                        }
-                    }
-                    Debug.DrawLine(collisionsJob.ProjectileCollisions[i],
-                            collisionsJob.ShipCollisions[i]);
-
-                }
-
-            }
-            //if (collisionsJob.Collision)
-            {
-                //at least this works now = P
-                //Debug.Log(collisionsJob.ProjectileCollisionIDs.Length);
-                //foreach (float3 ID in collisionsJob.ProjectileCollisionIDs)
-                //{
-                //    if (ID.y != 0 && ID.z != 0)
-                //    {
-                //        Debug.LogError("Nu kommer proj id:");
-
-                //        Debug.LogError(ID);
-
-                //    }
-                //}
-                //foreach (float3 ID in collisionsJob.ShipCollisionIDs)
-                //{
-                //    if (ID.y != 0 && ID.z != 0)
-                //    {
-                //        Debug.LogError("Nu kommer ship id:");
-
-                //        Debug.LogError(ID);
-                //    }
-                //}
-            }
-
+            // Go through all collision in an ugly way
+            IterateCollisionArrays();
+            // Dispose the native arrays for the job
             CleanUp();
+        }
+
+        private void IterateCollisionArrays()
+        {
+            for (int i = 0; i < ProjectileCollisions.Length; i++)
+            {
+                for (int j = 0; j < ShipCollisions.Length; j++)
+                {
+                    float distance = Vector3.Distance(ProjectileCollisions[i],
+                        ShipCollisions[j]);
+
+                    if (distance > 0 && distance < MinDistanceForHit)
+                    {
+                        // get the ship from the collision and remove it
+                        GameObject go = FindCorrectObject(true, ShipCollisions[j]);
+                        if (go != null && go.TryGetComponent<IShip>(out var ship))
+                        {
+                            ship.DoDamage(1);
+                        }
+                        // get the projectile from the collision and remove it
+                        go = FindCorrectObject(false, ProjectileCollisions[i]);
+                        if (go != null && go.TryGetComponent<Projectile>(out var proj))
+                        {
+                            projManager.activeProjectiles.Remove(go);
+                            proj.RemoveAtCollision();
+
+                        }
+                    }
+                }
+            }
+        }
+
+        private GameObject FindCorrectObject(bool ship, Vector3 pos)
+        {
+            if (ship)
+            {
+                foreach (var item in shipTransforms)
+                {
+                    if (item.position == pos)
+                    {
+                        return item.gameObject;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in projectileTransforms)
+                {
+                    if (item.position == pos)
+                    {
+                        return item.gameObject;
+                    }
+                }
+            }
+            return null;
         }
 
         private void CleanUp()
@@ -227,13 +233,13 @@ namespace SpaceJobs
             {
                 ProjectileObjects.Dispose();
             }
-            if (ProjectileCollisionIDs.IsCreated)
+            if (ProjectileCollisions.IsCreated)
             {
-                ProjectileCollisionIDs.Dispose();
+                ProjectileCollisions.Dispose();
             }
-            if (ShipCollisionIDs.IsCreated)
+            if (ShipCollisions.IsCreated)
             {
-                ShipCollisionIDs.Dispose();
+                ShipCollisions.Dispose();
             }
         }
     }

@@ -8,19 +8,6 @@ using Unity.Mathematics;
 namespace SpaceJobs
 {
     [BurstCompile]
-    public struct CollisionObject
-    {
-        public CollisionObject(float3 Position, int ID)
-        {
-            ObjectPosition = Position;
-            this.ID = ID;
-        }
-
-        public float3 ObjectPosition { get; }
-        public int ID { get; }
-    }
-
-    [BurstCompile]
     public struct LookForCollisionsJob : IJob
     {
         [ReadOnly] public NativeArray<float3> ShipLocations;

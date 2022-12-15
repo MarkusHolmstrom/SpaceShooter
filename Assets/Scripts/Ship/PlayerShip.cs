@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Entities;
-using Unity.Mathematics;
-using Unity.VisualScripting;
+
+using TMPro;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 // https://www.youtube.com/watch?v=YxlY4_aj678 tut
 
@@ -22,7 +18,7 @@ public class PlayerShip : MonoBehaviour, IShip
     [SerializeField]
     private int YMAX = 8;
     [SerializeField]
-    private int XMAX = 13;
+    private int ZMAX = 13;
 
     [SerializeField]
     private GameObject bullet;
@@ -38,6 +34,9 @@ public class PlayerShip : MonoBehaviour, IShip
 
     [SerializeField]
     private int Health = 10;
+
+    [SerializeField]
+    private TMP_Text progressText;
 
     // Start is called before the first frame update
     void Start()
@@ -60,17 +59,7 @@ public class PlayerShip : MonoBehaviour, IShip
             moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime,
             moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime);
 
-        // Constrains
-        if (shipTransform.position.x < -XMAX)
-        {
-            shipTransform.position = 
-                new Vector3(XMAX, shipTransform.position.y, shipTransform.position.z);
-        }
-        else if (shipTransform.position.x > XMAX)
-        {
-            shipTransform.position =
-                new Vector3(-XMAX, shipTransform.position.y, shipTransform.position.z);
-        }
+        // Constrains, moves the ship to opposite side of screen when passes YMax or ZMax
         if (shipTransform.position.y < -YMAX)
         {
             shipTransform.position =
@@ -82,6 +71,16 @@ public class PlayerShip : MonoBehaviour, IShip
                 new Vector3(shipTransform.position.x, -YMAX, shipTransform.position.z);
         }
 
+        if (shipTransform.position.z < -ZMAX)
+        {
+            shipTransform.position =
+                new Vector3(shipTransform.position.x, shipTransform.position.y, ZMAX);
+        }
+        else if (shipTransform.position.z > ZMAX)
+        {
+            shipTransform.position =
+                new Vector3(shipTransform.position.x, shipTransform.position.y, -ZMAX);
+        }
     }
 
     public void UpdateRotation()
@@ -125,7 +124,10 @@ public class PlayerShip : MonoBehaviour, IShip
 
     public void OnDeath()
     {
-        //Debug.Log("Player dead! NOOOOO stop playing! youre dead, you here me? STop!!! STOP this MADNESS now GOD Dammit!!!");
+        if (progressText != null)
+        {
+            progressText.text = "Player is dead! NOOOOO stop playing! youre dead, you here me? STop!!! STOP this MADNESS now GOD Dammit!!!";
+        }
     }
 
 }

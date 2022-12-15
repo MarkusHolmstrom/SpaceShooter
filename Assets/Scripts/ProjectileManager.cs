@@ -137,7 +137,6 @@ public class ProjectileManager : MonoBehaviour
     public void DeActivateProjectile(GameObject proj)
     {
         activeProjectiles.Remove(proj);
-        proj.SetActive(false);
     }
 
     public void DeActivateProjectile(bool enemy, TypeProjectile proj)
