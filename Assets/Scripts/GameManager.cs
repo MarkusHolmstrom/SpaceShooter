@@ -36,6 +36,10 @@ namespace SpaceJobs
         public static Transform[] projectileTransforms;
 
         private Transform playerTransform;
+
+        private int shipActive = 0;
+        private int projActive = 0;
+
         // enemy wave variables
         [SerializeField]
         private TMP_Text waveText;
@@ -104,8 +108,8 @@ namespace SpaceJobs
         private void SetupTransforms()
         {
             // add one for the player ship
-            int shipActive = enemyManager.activeEnemies.Count + 1;
-            int projActive = projManager.activeProjectiles.Count;
+            shipActive = enemyManager.activeEnemies.Count + 1;
+            projActive = projManager.activeProjectiles.Count;
             ShipObjects = new NativeArray<float3>(shipActive, Allocator.TempJob);
             ProjectileObjects = new NativeArray<float3>(projActive, Allocator.TempJob);
 
@@ -138,8 +142,8 @@ namespace SpaceJobs
                 ProjectileObjects[i] = projectileTransforms[i].localPosition;
             }
 
-            ShipCollisions = new NativeArray<float3>(MaxQuantityEnemies, Allocator.TempJob);
-            ProjectileCollisions = new NativeArray<float3>(MaxQuantityEnemies, Allocator.TempJob);
+            ShipCollisions = new NativeArray<float3>(shipActive, Allocator.TempJob);
+            ProjectileCollisions = new NativeArray<float3>(projActive, Allocator.TempJob);
             
             LookForCollisionsJob collisionsJob = new LookForCollisionsJob
             {
