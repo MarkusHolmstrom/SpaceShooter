@@ -111,6 +111,7 @@ public class PlayerShip : MonoBehaviour, IShip
     public void DoDamage(int damage)
     {
         Health -= damage;
+        progressText.text = "Player is alive: " + Health + " lives remaining!";
         if (Health <= 0)
         {
             OnDeath();

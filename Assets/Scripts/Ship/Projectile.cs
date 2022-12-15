@@ -43,7 +43,10 @@ public class Projectile : MonoBehaviour
     public void RemoveAtCollision()
     {
         GameObject expl = VFXManager.SharedInstance.ActivateExplosion(true);
-        expl.transform.position = bulletTransform.position;
+        if (expl != null)
+        {
+            expl.transform.position = bulletTransform.position;
+        }
         Remove();
     }
 
