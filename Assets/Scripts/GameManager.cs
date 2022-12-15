@@ -64,6 +64,10 @@ namespace SpaceJobs
             // These two functions handle the look for collision jobs
             SetupTransforms();
             SetPositions();
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
 
         private void SpawnLoop()
